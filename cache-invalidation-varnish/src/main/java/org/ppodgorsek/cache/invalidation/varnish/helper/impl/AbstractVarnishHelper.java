@@ -66,7 +66,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 	 * 
 	 * @param method
 	 *            The HTTP method.
-	 * @throws UnreachableHostException
+	 * @throws ConnectException
 	 *             An exception thrown if the remote host can't be contacted.
 	 */
 	protected void sendHttpMethod(final HttpMethodBase method) throws ConnectException {
