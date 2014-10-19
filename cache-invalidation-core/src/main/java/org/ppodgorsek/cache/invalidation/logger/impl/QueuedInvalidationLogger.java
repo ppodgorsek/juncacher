@@ -24,7 +24,7 @@ public class QueuedInvalidationLogger implements InvalidationLogger {
 
 	private final Queue<InvalidationEntry> queue = new ConcurrentLinkedQueue<InvalidationEntry>();
 
-	private List<InvalidationStrategy> strategies;
+	private List<InvalidationStrategy<InvalidationEntry>> strategies;
 
 	/**
 	 * Default constructor.
@@ -83,7 +83,7 @@ public class QueuedInvalidationLogger implements InvalidationLogger {
 
 		LOGGER.debug("Processing an invalidation entry: {}", entry);
 
-		for (InvalidationStrategy strategy : strategies) {
+		for (InvalidationStrategy<InvalidationEntry> strategy : strategies) {
 
 			if (strategy.canHandle(entry)) {
 
@@ -91,7 +91,7 @@ public class QueuedInvalidationLogger implements InvalidationLogger {
 				addInvalidationEntries(relatedEntries);
 
 				try {
-					strategy.invalidateEntry(entry);
+					strategy.delegateInvalidation(entry);
 				}
 				catch (final InvalidationException e) {
 					LOGGER.warn("{} can't be invalidated, it will be replaced on the queue", entry);
@@ -102,7 +102,7 @@ public class QueuedInvalidationLogger implements InvalidationLogger {
 	}
 
 	@Required
-	public void setStrategies(final List<InvalidationStrategy> newStrategies) {
+	public void setStrategies(final List<InvalidationStrategy<InvalidationEntry>> newStrategies) {
 		strategies = newStrategies;
 	}
 

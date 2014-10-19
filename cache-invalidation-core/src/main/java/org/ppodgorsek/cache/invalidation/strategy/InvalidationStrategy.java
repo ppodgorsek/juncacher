@@ -10,7 +10,7 @@ import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
  * 
  * @author Paul Podgorsek
  */
-public interface InvalidationStrategy {
+public interface InvalidationStrategy<T extends InvalidationEntry> {
 
 	/**
 	 * Indicates whether the strategy can handle an entry or not.
@@ -31,13 +31,13 @@ public interface InvalidationStrategy {
 	List<InvalidationEntry> getRelatedEntries(InvalidationEntry entry);
 
 	/**
-	 * Invalidates a cache entry.
+	 * Delegates the invalidation of an entry to one or more helpers.
 	 * 
 	 * @param entry
 	 *            The entry that must be invalidated.
 	 * @throws InvalidationException
 	 *             An exception thrown if the invalidation couldn't be performed.
 	 */
-	void invalidateEntry(InvalidationEntry entry) throws InvalidationException;
+	void delegateInvalidation(T entry) throws InvalidationException;
 
 }
