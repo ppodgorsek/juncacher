@@ -30,23 +30,6 @@
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- Bean Factory and JavaBeans utilities (depends on spring-core) Define this if you use Spring Bean APIs (org.springframework.beans.*) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-		</dependency>
-
-		<!-- Core utilities used by other modules. Define this if you use Spring Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
