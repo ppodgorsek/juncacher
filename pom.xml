@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>cache-invalidation-core</module>
+		<module>cache-invalidation-ehcache</module>
 		<module>cache-invalidation-varnish</module>
 	</modules>
 
@@ -56,6 +57,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.ppodgorsek.cache</groupId>
+				<artifactId>cache-invalidation-ehcache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ppodgorsek.cache</groupId>
 				<artifactId>cache-invalidation-varnish</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -84,6 +90,12 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
+				<version>${org.springframework.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
 				<version>${org.springframework.version}</version>
 			</dependency>
 
