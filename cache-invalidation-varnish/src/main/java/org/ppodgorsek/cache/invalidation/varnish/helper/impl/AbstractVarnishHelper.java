@@ -32,6 +32,11 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 
 	private HttpClient httpClient;
 
+	/**
+	 * The maximum number of times invalidation requests will be sent to Varnish before giving up.
+	 */
+	private int maxTries = MAX_TRIES;
+
 	private Map<Class<? extends InvalidationEntry>, VarnishUrlHolder> urlHolders;
 
 	/**
@@ -94,7 +99,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 				method.releaseConnection();
 			}
 		}
-		while (!success && tries < MAX_TRIES);
+		while (!success && tries < maxTries);
 
 		if (!success) {
 			throw new ConnectException();
@@ -119,9 +124,40 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 		}
 	}
 
+	/**
+	 * @return The HTTP client.
+	 */
+	public HttpClient getHttpClient() {
+		return httpClient;
+	}
+
 	@Required
 	public void setHttpClient(final HttpClient client) {
 		httpClient = client;
+	}
+
+	/**
+	 * @return The maximum number of tries.
+	 */
+	public int getMaxTries() {
+		return maxTries;
+	}
+
+	/**
+	 * Sets the maximum number of times invalidation requests will be sent to Varnish before giving up.
+	 * 
+	 * @param newMaxTries
+	 *            The new maximum of tries.
+	 */
+	public void setMaxTries(final int newMaxTries) {
+		maxTries = newMaxTries;
+	}
+
+	/**
+	 * @return The URL holders.
+	 */
+	public Map<Class<? extends InvalidationEntry>, VarnishUrlHolder> getUrlHolders() {
+		return urlHolders;
 	}
 
 	@Required
