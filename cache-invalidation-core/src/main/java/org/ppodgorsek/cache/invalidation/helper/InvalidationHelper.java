@@ -8,7 +8,7 @@ import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
  * 
  * @author Paul Podgorsek
  */
-public interface InvalidationHelper {
+public interface InvalidationHelper<T extends InvalidationEntry> {
 
 	/**
 	 * Invalidates a cache entry.
@@ -18,6 +18,6 @@ public interface InvalidationHelper {
 	 * @throws InvalidationException
 	 *             An exception thrown if the invalidation couldn't be performed.
 	 */
-	void invalidateEntry(InvalidationEntry entry) throws InvalidationException;
+	void invalidateEntry(T entry) throws InvalidationException;
 
 }

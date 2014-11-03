@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
  * 
  * @author Paul Podgorsek
  */
-public abstract class AbstractVarnishHelper implements InvalidationHelper {
+public abstract class AbstractVarnishHelper<T extends InvalidationEntry> implements InvalidationHelper<T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVarnishHelper.class);
 
@@ -37,7 +37,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 	 */
 	private int maxTries = MAX_TRIES;
 
-	private Map<Class<? extends InvalidationEntry>, VarnishUrlHolder> urlHolders;
+	private Map<Class<? extends T>, VarnishUrlHolder> urlHolders;
 
 	/**
 	 * Default constructor.
@@ -47,7 +47,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 	}
 
 	@Override
-	public void invalidateEntry(final InvalidationEntry entry) throws InvalidationException {
+	public void invalidateEntry(final T entry) throws InvalidationException {
 
 		VarnishUrlHolder urlHolder = urlHolders.get(entry.getClass());
 
@@ -62,9 +62,9 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 		}
 	}
 
-	protected abstract HttpBanMethod getBanMethod(InvalidationEntry entry, String url);
+	protected abstract HttpBanMethod getBanMethod(T entry, String url);
 
-	protected abstract HttpPurgeMethod getPurgeMethod(InvalidationEntry entry, String url);
+	protected abstract HttpPurgeMethod getPurgeMethod(T entry, String url);
 
 	/**
 	 * Sends a HTTP method. If the remote host can't be contacted, this method will retry several times before propagating the exception.
@@ -106,7 +106,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 		}
 	}
 
-	private void ban(final InvalidationEntry entry, final List<String> banUrls) throws ConnectException, URIException {
+	private void ban(final T entry, final List<String> banUrls) throws ConnectException, URIException {
 
 		for (String url : banUrls) {
 			HttpBanMethod method = getBanMethod(entry, url);
@@ -115,7 +115,7 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 		}
 	}
 
-	private void purge(final InvalidationEntry entry, final List<String> purgeUrls) throws ConnectException, URIException {
+	private void purge(final T entry, final List<String> purgeUrls) throws ConnectException, URIException {
 
 		for (String url : purgeUrls) {
 			HttpPurgeMethod method = getPurgeMethod(entry, url);
@@ -156,12 +156,12 @@ public abstract class AbstractVarnishHelper implements InvalidationHelper {
 	/**
 	 * @return The URL holders.
 	 */
-	public Map<Class<? extends InvalidationEntry>, VarnishUrlHolder> getUrlHolders() {
+	public Map<Class<? extends T>, VarnishUrlHolder> getUrlHolders() {
 		return urlHolders;
 	}
 
 	@Required
-	public void setUrlHolders(final Map<Class<? extends InvalidationEntry>, VarnishUrlHolder> holders) {
+	public void setUrlHolders(final Map<Class<? extends T>, VarnishUrlHolder> holders) {
 		urlHolders = holders;
 	}
 
