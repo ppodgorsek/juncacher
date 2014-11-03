@@ -1,7 +1,5 @@
 package org.ppodgorsek.cache.invalidation.strategy;
 
-import java.util.List;
-
 import org.ppodgorsek.cache.invalidation.exception.InvalidationException;
 import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
@@ -20,15 +18,6 @@ public interface InvalidationStrategy<T extends InvalidationEntry> {
 	 * @return <code>true</code> if the entry can be invalidated by the strategy, <code>false</code> otherwise.
 	 */
 	boolean canHandle(InvalidationEntry entry);
-
-	/**
-	 * Gets the elements related to an invalidation entry.
-	 * 
-	 * @param entry
-	 *            The invalidation entry.
-	 * @return The elements related to the provided entry, or an empty list if there are none.
-	 */
-	List<InvalidationEntry> getRelatedEntries(InvalidationEntry entry);
 
 	/**
 	 * Delegates the invalidation of an entry to one or more helpers.

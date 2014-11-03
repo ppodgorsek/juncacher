@@ -87,9 +87,6 @@ public class QueuedInvalidationLogger implements InvalidationLogger {
 
 			if (strategy.canHandle(entry)) {
 
-				final List<InvalidationEntry> relatedEntries = strategy.getRelatedEntries(entry);
-				addInvalidationEntries(relatedEntries);
-
 				try {
 					strategy.delegateInvalidation(entry);
 				}
