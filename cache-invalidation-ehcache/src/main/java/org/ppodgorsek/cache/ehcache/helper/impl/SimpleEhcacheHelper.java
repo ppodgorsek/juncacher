@@ -1,4 +1,4 @@
-package org.ppodgorsek.cache.ehcache;
+package org.ppodgorsek.cache.ehcache.helper.impl;
 
 import java.util.List;
 import java.util.Map;
