@@ -5,3 +5,4 @@ classes/
 target/
 .classpath
 .project
+bin
