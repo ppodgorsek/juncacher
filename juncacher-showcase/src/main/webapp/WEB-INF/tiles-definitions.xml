@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+ <!DOCTYPE tiles-definitions PUBLIC 
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<definition name="homePage" template="/layout/home.ftl">
+		<put-attribute name="head" value="/head.do" />
+		<put-attribute name="header" value="/header.do" />
+		<put-attribute name="footer" value="/footer.do" />
+		<put-attribute name="main-column" value="/common/home.do" />
+	</definition>
+
+</tiles-definitions>

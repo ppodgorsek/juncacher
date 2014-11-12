@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.github.ppodgorsek</groupId>
+		<artifactId>juncacher</artifactId>
+		<version>1.0.6-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.github.ppodgorsek</groupId>
+	<artifactId>juncacher-showcase</artifactId>
+	<packaging>war</packaging>
+
+	<name>JUncacher showcase webapp</name>
+	<description>Showcase web application for JUncacher.</description>
+	<url>https://github.com/ppodgorsek/juncacher</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Paul Podgorsek</name>
+			<email>ppodgorsek@users.noreply.github.com</email>
+			<organization>GitHub</organization>
+			<organizationUrl>https://github.com/ppodgorsek</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:ppodgorsek/juncacher.git</connection>
+		<developerConnection>scm:git:git@github.com:ppodgorsek/juncacher.git</developerConnection>
+		<url>git@github.com:ppodgorsek/juncacher.git</url>
+	</scm>
+
+	<properties>
+		<config.path.prefix>../</config.path.prefix>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.github.ppodgorsek</groupId>
+			<artifactId>juncacher-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ppodgorsek</groupId>
+			<artifactId>juncacher-springcachemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ppodgorsek</groupId>
+			<artifactId>juncacher-varnish</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- TILES -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+		<!-- TUCKEY -->
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>juncacher-showcase</finalName>
+	</build>
+
+</project>
