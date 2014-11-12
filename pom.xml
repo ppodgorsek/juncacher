@@ -15,6 +15,7 @@
 		<module>cache-invalidation-core</module>
 		<module>cache-invalidation-ehcache</module>
 		<module>cache-invalidation-varnish</module>
+		<module>cache-invalidation-showcase</module>
 	</modules>
 
 	<properties>
@@ -27,7 +28,11 @@
 		<org.springframework.version>4.0.4.RELEASE</org.springframework.version>
 
 		<httpclient.version>3.1</httpclient.version>
+		<javax.servlet-api.version>2.5</javax.servlet-api.version>
+		<javax.servlet-jstl.version>1.2</javax.servlet-jstl.version>
 		<slf4j.version>1.7.7</slf4j.version>
+		<tiles.version>3.0.3</tiles.version>
+		<tuckey.version>4.0.4</tuckey.version>
 
 		<!-- PLUGINS -->
 		<ant-contrib.version>1.0b3</ant-contrib.version>
@@ -65,11 +70,60 @@
 				<artifactId>cache-invalidation-varnish</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.ppodgorsek.cache</groupId>
+				<artifactId>cache-invalidation-showcase</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>commons-httpclient</groupId>
 				<artifactId>commons-httpclient</artifactId>
 				<version>${httpclient.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${javax.servlet-jstl.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${javax.servlet-api.version}</version>
+			</dependency>
+
+			<!-- TILES -->
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-core</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-el</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-freemarker</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-jsp</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-servlet</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-servlet-wildcard</artifactId>
+				<version>${tiles.version}</version>
 			</dependency>
 
 			<dependency>
@@ -104,6 +158,13 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${org.springframework.version}</version>
+			</dependency>
+
+			<!-- TUCKEY -->
+			<dependency>
+				<groupId>org.tuckey</groupId>
+				<artifactId>urlrewritefilter</artifactId>
+				<version>${tuckey.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
