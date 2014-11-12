@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public abstract class AbstractInvalidationStrategy<T extends InvalidationEntry> implements InvalidationStrategy<T> {
 
-	private List<InvalidationHelper> helpers;
+	private List<InvalidationHelper<T>> helpers;
 
 	/**
 	 * Default constructor.
@@ -27,17 +27,17 @@ public abstract class AbstractInvalidationStrategy<T extends InvalidationEntry> 
 	@Override
 	public void delegateInvalidation(final T entry) throws InvalidationException {
 
-		for (InvalidationHelper helper : helpers) {
+		for (InvalidationHelper<T> helper : helpers) {
 			helper.invalidateEntry(entry);
 		}
 	}
 
-	public List<InvalidationHelper> getHelpers() {
+	public List<InvalidationHelper<T>> getHelpers() {
 		return helpers;
 	}
 
 	@Required
-	public void setHelpers(final List<InvalidationHelper> newHelpers) {
+	public void setHelpers(final List<InvalidationHelper<T>> newHelpers) {
 		helpers = newHelpers;
 	}
 
