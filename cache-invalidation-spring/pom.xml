@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>org.ppodgorsek.cache</groupId>
-	<artifactId>cache-invalidation-ehcache</artifactId>
+	<artifactId>cache-invalidation-spring</artifactId>
 
-	<name>Ehcache invalidation</name>
+	<name>Spring Cache Manager invalidation</name>
 	<url>https://github.com/ppodgorsek/cache-invalidation</url>
 
 	<properties>

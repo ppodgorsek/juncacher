@@ -13,7 +13,7 @@
 
 	<modules>
 		<module>cache-invalidation-core</module>
-		<module>cache-invalidation-ehcache</module>
+		<module>cache-invalidation-spring</module>
 		<module>cache-invalidation-varnish</module>
 	</modules>
 
@@ -57,7 +57,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.ppodgorsek.cache</groupId>
-				<artifactId>cache-invalidation-ehcache</artifactId>
+				<artifactId>cache-invalidation-spring</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

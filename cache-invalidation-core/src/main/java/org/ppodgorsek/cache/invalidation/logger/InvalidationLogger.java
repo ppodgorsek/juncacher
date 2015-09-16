@@ -1,19 +1,22 @@
 package org.ppodgorsek.cache.invalidation.logger;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.ppodgorsek.cache.invalidation.logger.impl.InMemoryInvalidationLogger;
 import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
- * Logs invalidation entries and processes them.
- * 
+ * Logs invalidation entries and processes them. Most use cases will simply use an in-memory logger ({@link InMemoryInvalidationLogger}) but other
+ * implementations could for example persist them to a database in order to have only one instance of a cluster performing invalidations.
+ *
  * @author Paul Podgorsek
  */
 public interface InvalidationLogger {
 
 	/**
 	 * Adds invalidation entries to the queue of elements to process.
-	 * 
+	 *
 	 * @param entries
 	 *            The entries that must be added to the queue.
 	 */
@@ -21,23 +24,17 @@ public interface InvalidationLogger {
 
 	/**
 	 * Adds an invalidation entry to the queue of elements to process.
-	 * 
+	 *
 	 * @param entry
 	 *            The entry that must be added to the queue.
 	 */
 	void addInvalidationEntry(InvalidationEntry entry);
 
 	/**
-	 * Processes the invalidation entries which already exist.
-	 */
-	void processInvalidationEntries();
-
-	/**
-	 * Triggers the invalidation of an element without adding it to the queue. This is mandatory for elements that must be instantly invalidated.
+	 * Returns the list of invalidation entries that have already been added.
 	 * 
-	 * @param entry
-	 *            The entry that must be invalidated.
+	 * @return The list of entries that were already added, or an empty list if there are none.
 	 */
-	void triggerDirectInvalidation(InvalidationEntry entry);
+	List<InvalidationEntry> getEntries();
 
 }

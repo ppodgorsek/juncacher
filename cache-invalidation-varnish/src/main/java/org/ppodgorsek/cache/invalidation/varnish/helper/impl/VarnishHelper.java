@@ -6,29 +6,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
-import org.apache.commons.httpclient.URIException;
 import org.ppodgorsek.cache.invalidation.exception.InvalidationException;
+import org.ppodgorsek.cache.invalidation.helper.AbstractChainedInvalidationHelper;
 import org.ppodgorsek.cache.invalidation.helper.InvalidationHelper;
 import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
-import org.ppodgorsek.cache.invalidation.varnish.http.HttpBanMethod;
-import org.ppodgorsek.cache.invalidation.varnish.http.HttpPurgeMethod;
-import org.ppodgorsek.cache.invalidation.varnish.model.VarnishUrlHolder;
+import org.ppodgorsek.cache.invalidation.varnish.strategy.VarnishUrlStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
- * Helper used to send requests to Varnish.
- * 
+ * Helper used to send invalidation requests to Varnish.
+ *
  * @author Paul Podgorsek
  */
-public abstract class AbstractVarnishHelper<T extends InvalidationEntry> implements InvalidationHelper<T> {
+public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedInvalidationHelper<T>implements InvalidationHelper<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVarnishHelper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VarnishHelper.class);
 
-	private static final int MAX_TRIES = 3;
+	private static final int MAX_TRIES = 5;
 
 	private HttpClient httpClient;
 
@@ -37,38 +34,31 @@ public abstract class AbstractVarnishHelper<T extends InvalidationEntry> impleme
 	 */
 	private int maxTries = MAX_TRIES;
 
-	private Map<Class<? extends T>, VarnishUrlHolder> urlHolders;
-
-	/**
-	 * Default constructor.
-	 */
-	public AbstractVarnishHelper() {
-		super();
-	}
+	private Map<Class<T>, VarnishUrlStrategy<T>> varnishUrlStrategies;
 
 	@Override
-	public void invalidateEntry(final T entry) throws InvalidationException {
+	protected void invalidateEntry(final T entry) throws InvalidationException {
 
-		VarnishUrlHolder urlHolder = urlHolders.get(entry.getClass());
+		final VarnishUrlStrategy<T> varnishUrlStrategy = varnishUrlStrategies.get(entry.getClass());
 
-		if (urlHolder != null) {
+		if (varnishUrlStrategy == null) {
+			LOGGER.info("No URL strategy found for entry {}", entry);
+		}
+		else {
 			try {
-				ban(entry, urlHolder.getBanUrls());
-				purge(entry, urlHolder.getPurgeUrls());
+				sendHttpMethods(varnishUrlStrategy.getBanMethods(entry));
+				sendHttpMethods(varnishUrlStrategy.getPurgeMethods(entry));
+				sendHttpMethods(varnishUrlStrategy.getGetMethods(entry));
 			}
-			catch (ConnectException | URIException e) {
-				throw new InvalidationException("Impossible to evict the entry from Varnish", e);
+			catch (final ConnectException e) {
+				throw new InvalidationException("Impossible to evict entry " + entry + " from Varnish", e);
 			}
 		}
 	}
 
-	protected abstract HttpBanMethod getBanMethod(T entry, String url);
-
-	protected abstract HttpPurgeMethod getPurgeMethod(T entry, String url);
-
 	/**
 	 * Sends a HTTP method. If the remote host can't be contacted, this method will retry several times before propagating the exception.
-	 * 
+	 *
 	 * @param method
 	 *            The HTTP method.
 	 * @throws ConnectException
@@ -89,9 +79,6 @@ public abstract class AbstractVarnishHelper<T extends InvalidationEntry> impleme
 
 				success = true;
 			}
-			catch (final HttpException e) {
-				LOGGER.warn("Impossible to execute the request: {}", e.getMessage());
-			}
 			catch (final IOException e) {
 				LOGGER.warn("Impossible to execute the request: {}", e.getMessage());
 			}
@@ -106,20 +93,9 @@ public abstract class AbstractVarnishHelper<T extends InvalidationEntry> impleme
 		}
 	}
 
-	private void ban(final T entry, final List<String> banUrls) throws ConnectException, URIException {
+	private void sendHttpMethods(final List<? extends HttpMethodBase> methods) throws ConnectException {
 
-		for (String url : banUrls) {
-			HttpBanMethod method = getBanMethod(entry, url);
-
-			sendHttpMethod(method);
-		}
-	}
-
-	private void purge(final T entry, final List<String> purgeUrls) throws ConnectException, URIException {
-
-		for (String url : purgeUrls) {
-			HttpPurgeMethod method = getPurgeMethod(entry, url);
-
+		for (final HttpMethodBase method : methods) {
 			sendHttpMethod(method);
 		}
 	}
@@ -145,7 +121,7 @@ public abstract class AbstractVarnishHelper<T extends InvalidationEntry> impleme
 
 	/**
 	 * Sets the maximum number of times invalidation requests will be sent to Varnish before giving up.
-	 * 
+	 *
 	 * @param newMaxTries
 	 *            The new maximum of tries.
 	 */
@@ -153,16 +129,13 @@ public abstract class AbstractVarnishHelper<T extends InvalidationEntry> impleme
 		maxTries = newMaxTries;
 	}
 
-	/**
-	 * @return The URL holders.
-	 */
-	public Map<Class<? extends T>, VarnishUrlHolder> getUrlHolders() {
-		return urlHolders;
+	public Map<Class<T>, VarnishUrlStrategy<T>> getVarnishUrlStrategies() {
+		return varnishUrlStrategies;
 	}
 
 	@Required
-	public void setUrlHolders(final Map<Class<? extends T>, VarnishUrlHolder> holders) {
-		urlHolders = holders;
+	public void setVarnishUrlStrategies(final Map<Class<T>, VarnishUrlStrategy<T>> strategies) {
+		varnishUrlStrategies = strategies;
 	}
 
 }
