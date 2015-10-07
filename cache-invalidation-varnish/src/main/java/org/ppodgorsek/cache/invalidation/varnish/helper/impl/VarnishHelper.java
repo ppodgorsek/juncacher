@@ -19,9 +19,11 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * Helper used to send invalidation requests to Varnish.
  *
+ * @since 1.0
  * @author Paul Podgorsek
  */
-public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedInvalidationHelper<T>implements InvalidationHelper<T> {
+public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedInvalidationHelper<T>
+		implements InvalidationHelper<T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VarnishHelper.class);
 
@@ -51,13 +53,15 @@ public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedI
 				sendHttpMethods(varnishUrlStrategy.getGetMethods(entry));
 			}
 			catch (final ConnectException e) {
-				throw new InvalidationException("Impossible to evict entry " + entry + " from Varnish", e);
+				throw new InvalidationException(
+						"Impossible to evict entry " + entry + " from Varnish", e);
 			}
 		}
 	}
 
 	/**
-	 * Sends a HTTP method. If the remote host can't be contacted, this method will retry several times before propagating the exception.
+	 * Send a HTTP method. If the remote host can't be contacted, this method will retry several
+	 * times before propagating the exception.
 	 *
 	 * @param method
 	 *            The HTTP method.
@@ -93,7 +97,16 @@ public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedI
 		}
 	}
 
-	private void sendHttpMethods(final List<? extends HttpMethodBase> methods) throws ConnectException {
+	/**
+	 * Send a list of HTTP methods to Varnish, one by one.
+	 * 
+	 * @param methods
+	 *            The HTTP methods.
+	 * @throws ConnectException
+	 *             An exception thrown if the communication with Varnish fails.
+	 */
+	private void sendHttpMethods(final List<? extends HttpMethodBase> methods)
+			throws ConnectException {
 
 		for (final HttpMethodBase method : methods) {
 			sendHttpMethod(method);
@@ -120,7 +133,8 @@ public class VarnishHelper<T extends InvalidationEntry> extends AbstractChainedI
 	}
 
 	/**
-	 * Sets the maximum number of times invalidation requests will be sent to Varnish before giving up.
+	 * Sets the maximum number of times invalidation requests will be sent to Varnish before giving
+	 * up.
 	 *
 	 * @param newMaxTries
 	 *            The new maximum of tries.

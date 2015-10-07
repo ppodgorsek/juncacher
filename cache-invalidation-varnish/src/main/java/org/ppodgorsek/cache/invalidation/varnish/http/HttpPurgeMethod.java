@@ -4,7 +4,8 @@ import org.apache.commons.httpclient.HttpMethodBase;
 
 /**
  * HTTP method used to send PURGE requests.
- * 
+ *
+ * @since 1.0
  * @author ppodgorsek
  */
 public class HttpPurgeMethod extends HttpMethodBase {
@@ -21,7 +22,7 @@ public class HttpPurgeMethod extends HttpMethodBase {
 
 	/**
 	 * Constructor allowing to set the target URL.
-	 * 
+	 *
 	 * @param url
 	 *            The target URL.
 	 */

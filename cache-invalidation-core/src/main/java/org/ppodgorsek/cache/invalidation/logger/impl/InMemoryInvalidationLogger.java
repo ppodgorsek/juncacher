@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * An implementation of the invalidation logger that adds entries to a queue in memory.
  *
+ * @since 1.0
  * @author Paul Podgorsek
  */
 public class InMemoryInvalidationLogger implements InvalidationLogger {
@@ -21,13 +22,6 @@ public class InMemoryInvalidationLogger implements InvalidationLogger {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryInvalidationLogger.class);
 
 	private final Queue<InvalidationEntry> queue = new ConcurrentLinkedQueue<InvalidationEntry>();
-
-	/**
-	 * Default constructor.
-	 */
-	public InMemoryInvalidationLogger() {
-		super();
-	}
 
 	@Override
 	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {

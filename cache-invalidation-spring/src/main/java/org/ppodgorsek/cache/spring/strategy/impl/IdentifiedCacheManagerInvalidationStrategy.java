@@ -10,12 +10,17 @@ import org.springframework.cache.Cache;
 import org.springframework.util.Assert;
 
 /**
+ * Strategy that evicts a single element from cache regions when an entry needs to be invalidated.
+ *
+ * @since 1.0
  * @author Paul Podgorsek
  */
-public class IdentifiedCacheManagerInvalidationStrategy extends AbstractCacheManagerInvalidationStrategy<IdentifiedInvalidationEntry>
+public class IdentifiedCacheManagerInvalidationStrategy
+		extends AbstractCacheManagerInvalidationStrategy<IdentifiedInvalidationEntry>
 		implements CacheManagerStrategy<IdentifiedInvalidationEntry> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IdentifiedCacheManagerInvalidationStrategy.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(IdentifiedCacheManagerInvalidationStrategy.class);
 
 	@Override
 	public void invalidate(final IdentifiedInvalidationEntry entry) throws InvalidationException {

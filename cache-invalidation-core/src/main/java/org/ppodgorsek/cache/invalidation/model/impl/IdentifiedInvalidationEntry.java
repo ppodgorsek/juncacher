@@ -4,7 +4,8 @@ import org.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
  * Invalidation entry that has an identifier.
- * 
+ *
+ * @since 1.0
  * @author Paul Podgorsek
  */
 public class IdentifiedInvalidationEntry implements InvalidationEntry {
@@ -12,13 +13,6 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 	private static final long serialVersionUID = -8341534831781291865L;
 
 	private String id;
-
-	/**
-	 * Default constructor.
-	 */
-	public IdentifiedInvalidationEntry() {
-		super();
-	}
 
 	public String getId() {
 		return id;

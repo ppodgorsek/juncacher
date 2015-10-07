@@ -7,9 +7,13 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.cache.CacheManager;
 
 /**
+ * Holder containing the cache region names for a type of invalidation entry.
+ *
+ * @since 1.0
  * @author Paul Podgorsek
  */
-public abstract class AbstractCacheManagerInvalidationStrategy<T extends InvalidationEntry> implements CacheManagerStrategy<T> {
+public abstract class AbstractCacheManagerInvalidationStrategy<T extends InvalidationEntry>
+		implements CacheManagerStrategy<T> {
 
 	private CacheManager cacheManager;
 

@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 /**
  * An invalidation processor that reads entries from a logger.
  *
+ * @since 1.0
  * @author Paul Podgorsek
  */
 public class LoggedInvalidationProcessor implements InvalidationProcessor {
@@ -30,19 +31,23 @@ public class LoggedInvalidationProcessor implements InvalidationProcessor {
 	public void init(final ApplicationContext applicationContext) {
 
 		if (invalidationHelper == null) {
-			LOGGER.info("The invalidation helper hasn't been set, trying to determine a default one.");
+			LOGGER.info(
+					"The invalidation helper hasn't been set, trying to determine a default one.");
 
 			invalidationHelper = applicationContext.getBean(InvalidationHelper.class);
 
-			LOGGER.info("Invalidation helper found in the application context, using it: {}", invalidationHelper);
+			LOGGER.info("Invalidation helper found in the application context, using it: {}",
+					invalidationHelper);
 		}
 
 		if (invalidationLogger == null) {
-			LOGGER.info("The invalidation logger hasn't been set, trying to determine a default one.");
+			LOGGER.info(
+					"The invalidation logger hasn't been set, trying to determine a default one.");
 
 			invalidationLogger = applicationContext.getBean(InvalidationLogger.class);
 
-			LOGGER.info("Invalidation logger found in the application context, using it: {}", invalidationLogger);
+			LOGGER.info("Invalidation logger found in the application context, using it: {}",
+					invalidationLogger);
 		}
 	}
 

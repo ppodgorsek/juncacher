@@ -9,12 +9,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 
 /**
+ * Simple strategy that clears whole cache regions when an entry needs to be invalidated.
+ *
+ * @since 1.0
  * @author Paul Podgorsek
  */
-public class SimpleCacheManagerInvalidationStrategy extends AbstractCacheManagerInvalidationStrategy<InvalidationEntry>
+public class SimpleCacheManagerInvalidationStrategy
+		extends AbstractCacheManagerInvalidationStrategy<InvalidationEntry>
 		implements CacheManagerStrategy<InvalidationEntry> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleCacheManagerInvalidationStrategy.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(SimpleCacheManagerInvalidationStrategy.class);
 
 	@Override
 	public void invalidate(final InvalidationEntry entry) throws InvalidationException {

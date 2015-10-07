@@ -5,13 +5,20 @@ import org.ppodgorsek.cache.invalidation.varnish.strategy.AbstractVarnishUrlStra
 import org.ppodgorsek.cache.invalidation.varnish.strategy.VarnishUrlStrategy;
 
 /**
+ * URL strategy that replaces a placeholder in a URL by an invalidation entry's ID.
+ *
+ * @since 1.0
  * @author Paul Podgorsek
  */
-public class IdentifiedVarnishUrlStrategy extends AbstractVarnishUrlStrategy<IdentifiedInvalidationEntry>
+public class IdentifiedVarnishUrlStrategy
+		extends AbstractVarnishUrlStrategy<IdentifiedInvalidationEntry>
 		implements VarnishUrlStrategy<IdentifiedInvalidationEntry> {
 
 	private static final String DEFAULT_PLACEHOLDER = "ENTRY_ID";
 
+	/**
+	 * The placeholder that will be replaced in the URL by the entry's ID.
+	 */
 	private String placeholder = DEFAULT_PLACEHOLDER;
 
 	@Override
