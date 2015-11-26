@@ -1,0 +1,25 @@
+package com.github.ppodgorsek.cache.invalidation.model.impl;
+
+import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
+
+/**
+ * Invalidation entry that has an identifier.
+ *
+ * @since 1.0
+ * @author Paul Podgorsek
+ */
+public class IdentifiedInvalidationEntry implements InvalidationEntry {
+
+	private static final long serialVersionUID = -8341534831781291865L;
+
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(final String newId) {
+		id = newId;
+	}
+
+}

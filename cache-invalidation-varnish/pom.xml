@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.ppodgorsek.cache</groupId>
+		<groupId>com.github.ppodgorsek.cache</groupId>
 		<artifactId>cache-invalidation</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.ppodgorsek.cache</groupId>
+	<groupId>com.github.ppodgorsek.cache</groupId>
 	<artifactId>cache-invalidation-varnish</artifactId>
 	<packaging>jar</packaging>
 
 	<name>Varnish cache invalidation</name>
+	<description>Varnish module for the Cache Invalidation tool.</description>
 	<url>https://github.com/ppodgorsek/cache-invalidation</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Paul Podgorsek</name>
+			<email>ppodgorsek@users.noreply.github.com</email>
+			<organization>GitHub</organization>
+			<organizationUrl>https://github.com/ppodgorsek</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:ppodgorsek/cache-invalidation.git</connection>
+		<developerConnection>scm:git:git@github.com:ppodgorsek/cache-invalidation.git</developerConnection>
+		<url>git@github.com:ppodgorsek/cache-invalidation.git</url>
+	</scm>
 
 	<properties>
 		<config.path.prefix>../</config.path.prefix>
@@ -22,13 +46,18 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.ppodgorsek.cache</groupId>
+			<groupId>com.github.ppodgorsek.cache</groupId>
 			<artifactId>cache-invalidation-core</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
 
