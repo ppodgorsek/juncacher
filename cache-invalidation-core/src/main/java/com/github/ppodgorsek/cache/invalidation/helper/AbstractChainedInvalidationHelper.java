@@ -15,8 +15,7 @@ import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
- * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This
- * could for example allow the following chain:
+ * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This could for example allow the following chain:
  * <ol>
  * <li>Spring Cache Manager</li>
  * <li>Solr</li>
@@ -26,11 +25,9 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry>
-		implements InvalidationHelper<T> {
+public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry> implements InvalidationHelper<T> {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AbstractChainedInvalidationHelper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractChainedInvalidationHelper.class);
 
 	private InvalidationLogger invalidationLogger;
 
@@ -40,13 +37,11 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	public void init(final ApplicationContext applicationContext) {
 
 		if (invalidationLogger == null) {
-			LOGGER.info(
-					"The invalidation logger hasn't been set, trying to determine a default one.");
+			LOGGER.info("The invalidation logger hasn't been set, trying to determine a default one.");
 
 			invalidationLogger = applicationContext.getBean(InvalidationLogger.class);
 
-			LOGGER.info("Invalidation logger found in the application context, using it: {}",
-					invalidationLogger);
+			LOGGER.info("Invalidation logger found in the application context, using it: {}", invalidationLogger);
 		}
 	}
 
@@ -61,14 +56,14 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 				processedEntries.add(entry);
 			}
 			catch (final InvalidationException e) {
-				LOGGER.warn(
-						"Impossible to invalidate the {} entry, putting it back onto the queue of entries: {}",
-						entry, e.getMessage());
+				LOGGER.warn("Impossible to invalidate the {} entry, putting it back onto the queue of entries: {}", entry, e.getMessage());
 				invalidationLogger.addInvalidationEntry(entry);
 			}
 		}
 
-		getNextHelper().invalidate(processedEntries);
+		if (nextHelper != null) {
+			nextHelper.invalidate(processedEntries);
+		}
 	}
 
 	/**
