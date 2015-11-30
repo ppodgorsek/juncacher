@@ -10,4 +10,9 @@ import java.io.Serializable;
  */
 public interface InvalidationEntry extends Serializable {
 
+	/**
+	 * @return The entry's type.
+	 */
+	InvalidationEntryType getType();
+
 }
