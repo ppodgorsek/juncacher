@@ -6,7 +6,7 @@
 
 	<groupId>com.github.ppodgorsek.cache</groupId>
 	<artifactId>cache-invalidation</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<name>Cache invalidation</name>
