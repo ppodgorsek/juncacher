@@ -1,7 +1,6 @@
 package com.github.ppodgorsek.cache.invalidation.helper;
 
-import java.util.Collection;
-
+import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
@@ -13,11 +12,15 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 public interface InvalidationHelper<T extends InvalidationEntry> {
 
 	/**
-	 * Invalidate cache entries.
+	 * Returns the invalidation logger attached to this helper.
 	 *
-	 * @param entries
-	 *            The entries that must be invalidated.
+	 * @return The invalidation logger attached to this helper.
 	 */
-	void invalidate(Collection<T> entries);
+	InvalidationLogger<T> getInvalidationLogger();
+
+	/**
+	 * Invalidates the cache entries read from the invalidation logger.
+	 */
+	void invalidateEntries();
 
 }

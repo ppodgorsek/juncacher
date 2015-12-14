@@ -1,9 +1,5 @@
 package com.github.ppodgorsek.cache.invalidation.helper;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -15,7 +11,8 @@ import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
- * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This could for example allow the following chain:
+ * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This
+ * could for example allow the following chain:
  * <ol>
  * <li>Spring Cache Manager</li>
  * <li>Solr</li>
@@ -25,14 +22,17 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry> implements InvalidationHelper<T> {
+public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry> implements
+		InvalidationHelper<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractChainedInvalidationHelper.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(AbstractChainedInvalidationHelper.class);
 
-	private InvalidationLogger invalidationLogger;
+	private InvalidationLogger<T> invalidationLogger;
 
 	private InvalidationHelper<T> nextHelper;
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init(final ApplicationContext applicationContext) {
 
@@ -41,28 +41,39 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 
 			invalidationLogger = applicationContext.getBean(InvalidationLogger.class);
 
-			LOGGER.info("Invalidation logger found in the application context, using it: {}", invalidationLogger);
+			LOGGER.info("Invalidation logger found in the application context, using it: {}",
+					invalidationLogger);
 		}
 	}
 
 	@Override
-	public void invalidate(final Collection<T> entries) {
+	public void invalidateEntries() {
 
-		final List<T> processedEntries = new ArrayList<>();
+		InvalidationLogger<T> nextLogger = null;
 
-		for (final T entry : entries) {
+		if (nextHelper != null) {
+			nextLogger = nextHelper.getInvalidationLogger();
+		}
+
+		for (final T entry : invalidationLogger.getEntries()) {
 			try {
 				invalidateEntry(entry);
-				processedEntries.add(entry);
+
+				if (nextLogger != null) {
+					nextLogger.addInvalidationEntry(entry);
+				}
+
+				invalidationLogger.consume(entry);
 			}
 			catch (final InvalidationException e) {
-				LOGGER.warn("Impossible to invalidate the {} entry, putting it back onto the queue of entries: {}", entry, e.getMessage());
-				invalidationLogger.addInvalidationEntry(entry);
+				LOGGER.warn(
+						"Impossible to invalidate the {} entry, putting it back onto the queue of entries: {}",
+						entry, e.getMessage());
 			}
 		}
 
 		if (nextHelper != null) {
-			nextHelper.invalidate(processedEntries);
+			nextHelper.invalidateEntries();
 		}
 	}
 
@@ -76,7 +87,12 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	 */
 	protected abstract void invalidateEntry(T entry) throws InvalidationException;
 
-	public void setInvalidationLogger(final InvalidationLogger logger) {
+	@Override
+	public InvalidationLogger<T> getInvalidationLogger() {
+		return invalidationLogger;
+	}
+
+	public void setInvalidationLogger(final InvalidationLogger<T> logger) {
 		invalidationLogger = logger;
 	}
 

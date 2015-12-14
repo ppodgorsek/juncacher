@@ -18,22 +18,23 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class InMemoryInvalidationLogger implements InvalidationLogger {
+public class InMemoryInvalidationLogger<T extends InvalidationEntry> implements
+		InvalidationLogger<T> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryInvalidationLogger.class);
 
-	private final Queue<InvalidationEntry> queue = new ConcurrentLinkedQueue<InvalidationEntry>();
+	private final Queue<T> queue = new ConcurrentLinkedQueue<T>();
 
 	@Override
-	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
+	public void addInvalidationEntries(final Collection<T> entries) {
 
-		for (final InvalidationEntry entry : entries) {
+		for (final T entry : entries) {
 			addInvalidationEntry(entry);
 		}
 	}
 
 	@Override
-	public void addInvalidationEntry(final InvalidationEntry entry) {
+	public void addInvalidationEntry(final T entry) {
 
 		LOGGER.debug("Adding an invalidation entry: {}", entry);
 
@@ -43,9 +44,19 @@ public class InMemoryInvalidationLogger implements InvalidationLogger {
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public void consume(final T entry) {
+		queue.remove(entry);
+	}
 
-		final List<InvalidationEntry> entries = new ArrayList<>();
+	@Override
+	public void consume(final List<T> entries) {
+		queue.removeAll(entries);
+	}
+
+	@Override
+	public List<T> getEntries() {
+
+		final List<T> entries = new ArrayList<>();
 
 		while (!queue.isEmpty()) {
 			entries.add(queue.poll());

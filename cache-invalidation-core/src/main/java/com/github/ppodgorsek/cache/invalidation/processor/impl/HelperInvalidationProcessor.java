@@ -1,7 +1,5 @@
 package com.github.ppodgorsek.cache.invalidation.processor.impl;
 
-import java.util.Collection;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -9,46 +7,32 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.github.ppodgorsek.cache.invalidation.helper.InvalidationHelper;
-import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 import com.github.ppodgorsek.cache.invalidation.processor.InvalidationProcessor;
 
 /**
- * An invalidation processor that reads entries from a logger.
+ * An invalidation processor that triggers the invalidation from a helper.
  *
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class LoggedInvalidationProcessor implements InvalidationProcessor {
+public class HelperInvalidationProcessor implements InvalidationProcessor {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoggedInvalidationProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HelperInvalidationProcessor.class);
 
 	private InvalidationHelper<InvalidationEntry> invalidationHelper;
-
-	private InvalidationLogger invalidationLogger;
 
 	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init(final ApplicationContext applicationContext) {
 
 		if (invalidationHelper == null) {
-			LOGGER.info(
-					"The invalidation helper hasn't been set, trying to determine a default one.");
+			LOGGER.info("The invalidation helper hasn't been set, trying to determine a default one.");
 
 			invalidationHelper = applicationContext.getBean(InvalidationHelper.class);
 
 			LOGGER.info("Invalidation helper found in the application context, using it: {}",
 					invalidationHelper);
-		}
-
-		if (invalidationLogger == null) {
-			LOGGER.info(
-					"The invalidation logger hasn't been set, trying to determine a default one.");
-
-			invalidationLogger = applicationContext.getBean(InvalidationLogger.class);
-
-			LOGGER.info("Invalidation logger found in the application context, using it: {}",
-					invalidationLogger);
 		}
 	}
 
@@ -57,9 +41,7 @@ public class LoggedInvalidationProcessor implements InvalidationProcessor {
 
 		LOGGER.debug("Processing the invalidation entries");
 
-		final Collection<InvalidationEntry> entries = invalidationLogger.getEntries();
-
-		invalidationHelper.invalidate(entries);
+		invalidationHelper.invalidateEntries();
 	}
 
 	protected InvalidationHelper<InvalidationEntry> getInvalidationHelper() {
@@ -68,14 +50,6 @@ public class LoggedInvalidationProcessor implements InvalidationProcessor {
 
 	public void setInvalidationHelper(final InvalidationHelper<InvalidationEntry> helper) {
 		invalidationHelper = helper;
-	}
-
-	protected InvalidationLogger getInvalidationLogger() {
-		return invalidationLogger;
-	}
-
-	public void setInvalidationLogger(final InvalidationLogger logger) {
-		invalidationLogger = logger;
 	}
 
 }
