@@ -1,10 +1,8 @@
 package com.github.ppodgorsek.cache.invalidation.processor.impl;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.github.ppodgorsek.cache.invalidation.helper.InvalidationHelper;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
@@ -22,20 +20,6 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 
 	private InvalidationHelper<InvalidationEntry> invalidationHelper;
 
-	@SuppressWarnings("unchecked")
-	@PostConstruct
-	public void init(final ApplicationContext applicationContext) {
-
-		if (invalidationHelper == null) {
-			LOGGER.info("The invalidation helper hasn't been set, trying to determine a default one.");
-
-			invalidationHelper = applicationContext.getBean(InvalidationHelper.class);
-
-			LOGGER.info("Invalidation helper found in the application context, using it: {}",
-					invalidationHelper);
-		}
-	}
-
 	@Override
 	public void processEntries() {
 
@@ -48,6 +32,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 		return invalidationHelper;
 	}
 
+	@Required
 	public void setInvalidationHelper(final InvalidationHelper<InvalidationEntry> helper) {
 		invalidationHelper = helper;
 	}

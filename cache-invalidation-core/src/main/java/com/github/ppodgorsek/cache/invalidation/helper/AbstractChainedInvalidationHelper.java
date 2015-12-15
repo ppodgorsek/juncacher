@@ -1,10 +1,8 @@
 package com.github.ppodgorsek.cache.invalidation.helper;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.github.ppodgorsek.cache.invalidation.exception.InvalidationException;
 import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
@@ -31,20 +29,6 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	private InvalidationLogger<T> invalidationLogger;
 
 	private InvalidationHelper<T> nextHelper;
-
-	@SuppressWarnings("unchecked")
-	@PostConstruct
-	public void init(final ApplicationContext applicationContext) {
-
-		if (invalidationLogger == null) {
-			LOGGER.info("The invalidation logger hasn't been set, trying to determine a default one.");
-
-			invalidationLogger = applicationContext.getBean(InvalidationLogger.class);
-
-			LOGGER.info("Invalidation logger found in the application context, using it: {}",
-					invalidationLogger);
-		}
-	}
 
 	@Override
 	public void invalidateEntries() {
@@ -92,6 +76,7 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 		return invalidationLogger;
 	}
 
+	@Required
 	public void setInvalidationLogger(final InvalidationLogger<T> logger) {
 		invalidationLogger = logger;
 	}
