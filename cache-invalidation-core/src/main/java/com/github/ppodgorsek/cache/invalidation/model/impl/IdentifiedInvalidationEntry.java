@@ -1,5 +1,7 @@
 package com.github.ppodgorsek.cache.invalidation.model.impl;
 
+import org.springframework.util.Assert;
+
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
 
@@ -19,14 +21,18 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 
 	/**
 	 * Default constructor allowing to set the type and ID.
-	 * 
+	 *
 	 * @param entryType
 	 *            The entry's type.
 	 * @param entryId
 	 *            The entry's ID.
 	 */
 	public IdentifiedInvalidationEntry(final InvalidationEntryType entryType, final String entryId) {
+
 		super();
+
+		Assert.notNull(entryType, "The type is required");
+		Assert.notNull(entryId, "The ID is required");
 
 		type = entryType;
 		id = entryId;
@@ -38,6 +44,9 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 	}
 
 	public void setType(final InvalidationEntryType newType) {
+
+		Assert.notNull(newType, "The type is required");
+
 		type = newType;
 	}
 
@@ -46,6 +55,9 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 	}
 
 	public void setId(final String newId) {
+
+		Assert.notNull(newId, "The ID is required");
+
 		id = newId;
 	}
 
