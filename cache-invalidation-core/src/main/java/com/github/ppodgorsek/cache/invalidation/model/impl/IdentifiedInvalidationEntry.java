@@ -39,6 +39,38 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 	}
 
 	@Override
+	public boolean equals(final Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj instanceof IdentifiedInvalidationEntry) {
+
+			final IdentifiedInvalidationEntry entryType = (IdentifiedInvalidationEntry) obj;
+
+			return type.equals(entryType.getType()) && id.equals(entryType.getId());
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return (type + "#" + id).hashCode();
+	}
+
+	@Override
+	public String toString() {
+
+		final StringBuilder sbld = new StringBuilder(getClass().getSimpleName());
+		sbld.append("[type=").append(type);
+		sbld.append(",id=").append(id);
+
+		return sbld.toString();
+	}
+
+	@Override
 	public InvalidationEntryType getType() {
 		return type;
 	}

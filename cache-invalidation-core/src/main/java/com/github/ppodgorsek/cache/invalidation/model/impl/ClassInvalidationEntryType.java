@@ -1,6 +1,7 @@
 package com.github.ppodgorsek.cache.invalidation.model.impl;
 
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
 
@@ -12,7 +13,7 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
  */
 public class ClassInvalidationEntryType implements InvalidationEntryType {
 
-	private static final long serialVersionUID = 2854493160724214863L;
+	private static final long serialVersionUID = 3916221616919724073L;
 
 	private final Class<?> clazz;
 
@@ -32,8 +33,30 @@ public class ClassInvalidationEntryType implements InvalidationEntryType {
 	}
 
 	@Override
+	public boolean equals(final Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj instanceof ClassInvalidationEntryType) {
+
+			final ClassInvalidationEntryType entryType = (ClassInvalidationEntryType) obj;
+
+			return ObjectUtils.nullSafeEquals(clazz, entryType.getClass());
+		}
+
+		return false;
+	}
+
+	@Override
 	public String getValue() {
 		return clazz.getSimpleName();
+	}
+
+	@Override
+	public int hashCode() {
+		return getValue().hashCode();
 	}
 
 	@Override
