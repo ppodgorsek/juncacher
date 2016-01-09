@@ -1,5 +1,7 @@
 package com.github.ppodgorsek.cache.invalidation.model.impl;
 
+import org.springframework.util.Assert;
+
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
 
 /**
@@ -14,12 +16,16 @@ public class ClassInvalidationEntryType implements InvalidationEntryType {
 
 	/**
 	 * Default constructor.
-	 * 
+	 *
 	 * @param clazz
 	 *            The class to use to define this type.
 	 */
 	public ClassInvalidationEntryType(final Class<?> clazz) {
+
 		super();
+
+		Assert.notNull(clazz, "The class is required");
+
 		this.clazz = clazz;
 	}
 
