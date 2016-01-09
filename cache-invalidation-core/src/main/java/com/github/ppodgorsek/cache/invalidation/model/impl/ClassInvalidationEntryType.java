@@ -1,7 +1,6 @@
 package com.github.ppodgorsek.cache.invalidation.model.impl;
 
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
 
@@ -43,7 +42,7 @@ public class ClassInvalidationEntryType implements InvalidationEntryType {
 
 			final ClassInvalidationEntryType entryType = (ClassInvalidationEntryType) obj;
 
-			return ObjectUtils.nullSafeEquals(clazz, entryType.getClass());
+			return getValue().equals(entryType.getValue());
 		}
 
 		return false;
