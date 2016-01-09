@@ -66,6 +66,7 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 		final StringBuilder sbld = new StringBuilder(getClass().getSimpleName());
 		sbld.append("[type=").append(type);
 		sbld.append(",id=").append(id);
+		sbld.append("]");
 
 		return sbld.toString();
 	}
