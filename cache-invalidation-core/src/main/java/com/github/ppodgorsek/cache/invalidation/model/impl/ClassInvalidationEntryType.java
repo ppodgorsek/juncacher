@@ -12,6 +12,8 @@ import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntryType;
  */
 public class ClassInvalidationEntryType implements InvalidationEntryType {
 
+	private static final long serialVersionUID = 2854493160724214863L;
+
 	private final Class<?> clazz;
 
 	/**
