@@ -29,6 +29,12 @@ public class ClassInvalidationEntryTypeTest {
 	}
 
 	@Test
+	public void equalsWithDifferentClass() {
+		assertFalse("The equals method should return false",
+				classInvalidationEntryType.equals(new Object()));
+	}
+
+	@Test
 	public void equalsWithDifferentInstanceHavingSameClass() {
 		assertTrue("The equals method should return true",
 				classInvalidationEntryType.equals(new ClassInvalidationEntryType(Object.class)));
