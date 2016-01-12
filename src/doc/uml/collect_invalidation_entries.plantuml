@@ -1,0 +1,11 @@
+@startuml
+
+participant "Somewhere in the application" #lightgreen
+
+"Somewhere in the application" -> InvalidationLogger: addInvalidationEntry(InvalidationEntry entry)
+InvalidationLogger --> "Somewhere in the application"
+
+"Somewhere in the application" -> InvalidationLogger: addInvalidationEntries(Collection<InvalidationEntry> entries)
+InvalidationLogger --> "Somewhere in the application"
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+
+InvalidationProcessor -> InvalidationHelper: invalidateEntries()
+
+InvalidationHelper -> InvalidationLogger: getEntries()
+InvalidationLogger --> InvalidationHelper
+
+InvalidationHelper -> InvalidationHelper: invalidateEntry(InvalidationEntry entry)
+
+InvalidationHelper -> InvalidationLogger: consumeEntry(InvalidationEntry entry)
+InvalidationLogger --> InvalidationHelper
+
+InvalidationHelper --> InvalidationProcessor
+
+@enduml
