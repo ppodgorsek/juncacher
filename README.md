@@ -39,6 +39,8 @@ The invalidation processor is in charge of the invalidation. All calls from othe
 
 ![Processing invalidation entries](https://github.com/ppodgorsek/cache-invalidation/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
 
+The helpers/loggers of the same colour go together.
+
 ### Consuming changes
 
 After an invalidation has been performed, the invalidated element must be consumed in order to avoid processing it again during the next iteration.
