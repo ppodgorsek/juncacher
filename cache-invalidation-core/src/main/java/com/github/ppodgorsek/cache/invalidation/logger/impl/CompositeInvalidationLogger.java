@@ -1,6 +1,5 @@
 package com.github.ppodgorsek.cache.invalidation.logger.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,86 +9,61 @@ import com.github.ppodgorsek.cache.invalidation.logger.InvalidationLogger;
 import com.github.ppodgorsek.cache.invalidation.model.InvalidationEntry;
 
 /**
- * Invalidation logger that reads entries from several delegate loggers and adds entries either to
- * all delegate loggers or only to the first one of them (no need to process them several times).
+ * Composite invalidation logger that has one logger to read / add entries, another logger to
+ * consume entries. This is useful when having a chain of invalidation helpers if entries must only
+ * be consumed when all helpers have processed them.
  *
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class CompositeInvalidationLogger<T extends InvalidationEntry> implements
-		InvalidationLogger<T> {
+public class CompositeInvalidationLogger<T extends InvalidationEntry>
+		implements InvalidationLogger<T> {
 
-	private List<InvalidationLogger<T>> invalidationLoggers;
+	private InvalidationLogger<T> reader;
 
-	private boolean addToAllDelegates;
+	private InvalidationLogger<T> consumer;
 
 	@Override
 	public void addInvalidationEntries(final Collection<T> entries) {
-
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
-			invalidationLogger.addInvalidationEntries(entries);
-
-			if (!isAddToAllDelegates()) {
-				break;
-			}
-		}
+		reader.addInvalidationEntries(entries);
 	}
 
 	@Override
 	public void addInvalidationEntry(final T entry) {
-
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
-			invalidationLogger.addInvalidationEntry(entry);
-
-			if (!isAddToAllDelegates()) {
-				break;
-			}
-		}
+		reader.addInvalidationEntry(entry);
 	}
 
 	@Override
 	public void consume(final T entry) {
-
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
-			invalidationLogger.consume(entry);
-		}
+		consumer.consume(entry);
 	}
 
 	@Override
 	public void consume(final List<T> entries) {
-
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
-			invalidationLogger.consume(entries);
-		}
+		consumer.consume(entries);
 	}
 
 	@Override
 	public List<T> getEntries() {
-
-		final List<T> entries = new ArrayList<>();
-
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
-			entries.addAll(invalidationLogger.getEntries());
-		}
-
-		return entries;
+		return reader.getEntries();
 	}
 
-	public List<InvalidationLogger<T>> getInvalidationLoggers() {
-		return invalidationLoggers;
+	public InvalidationLogger<T> getReader() {
+		return reader;
 	}
 
 	@Required
-	public void setInvalidationLoggers(final List<InvalidationLogger<T>> loggers) {
-		invalidationLoggers = loggers;
+	public void setReader(final InvalidationLogger<T> entryReader) {
+		reader = entryReader;
 	}
 
-	public boolean isAddToAllDelegates() {
-		return addToAllDelegates;
+	public InvalidationLogger<T> getConsumer() {
+		return consumer;
 	}
 
-	public void setAddToAllDelegates(final boolean addToAll) {
-		addToAllDelegates = addToAll;
+	@Required
+	public void setConsumer(final InvalidationLogger<T> entryConsumer) {
+		consumer = entryConsumer;
 	}
 
 }
