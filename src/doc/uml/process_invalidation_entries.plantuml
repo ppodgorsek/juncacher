@@ -1,15 +1,38 @@
 @startuml
 
-InvalidationProcessor -> InvalidationHelper: invalidateEntries()
+participant "InvalidationProcessor"
+participant "InvalidationHelper 1" #lightgreen
+participant "InvalidationLogger 1" #lightgreen
+participant "InvalidationHelper 2" #lightblue
+participant "InvalidationLogger 2" #lightblue
 
-InvalidationHelper -> InvalidationLogger: getEntries()
-InvalidationLogger --> InvalidationHelper
+InvalidationProcessor -> "InvalidationHelper 1": invalidateEntries()
+activate "InvalidationHelper 1"
 
-InvalidationHelper -> InvalidationHelper: invalidateEntry(InvalidationEntry entry)
+"InvalidationHelper 1" -> "InvalidationLogger 1": getEntries()
+activate "InvalidationLogger 1"
+"InvalidationLogger 1" --> "InvalidationHelper 1"
+deactivate "InvalidationLogger 1"
 
-InvalidationHelper -> InvalidationLogger: consumeEntry(InvalidationEntry entry)
-InvalidationLogger --> InvalidationHelper
+loop entry: entries
+	"InvalidationHelper 1" -> "InvalidationHelper 1": invalidateEntry(InvalidationEntry entry)
 
-InvalidationHelper --> InvalidationProcessor
+	"InvalidationHelper 1" -> "InvalidationLogger 2": addInvalidationEntry(InvalidationEntry entry)
+	activate "InvalidationLogger 2"
+	"InvalidationLogger 2" --> "InvalidationHelper 1"
+	deactivate "InvalidationLogger 2"
+
+	"InvalidationHelper 1" -> "InvalidationLogger 1": consumeEntry(InvalidationEntry entry)
+	activate "InvalidationLogger 1"
+	"InvalidationLogger 1" --> "InvalidationHelper 1"
+	deactivate "InvalidationLogger 1"
+end
+
+"InvalidationHelper 1" -> "InvalidationHelper 2": invalidateEntries()
+note over "InvalidationHelper 2": The same logic is performed by\nthe next helper in the chain
+"InvalidationHelper 2" --> "InvalidationHelper 1"
+
+"InvalidationHelper 1" --> InvalidationProcessor
+deactivate "InvalidationHelper 1"
 
 @enduml
