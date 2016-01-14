@@ -1,6 +1,6 @@
 # JUncacher, the Java cache invalidation project
 
-JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring Cache Manager, Solr, others).
+JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring CacheManager, Solr, others).
 
 The supported cache types are currently:
 * Spring CacheManager (usually ehcache)
