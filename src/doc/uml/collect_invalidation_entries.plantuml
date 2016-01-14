@@ -1,13 +1,42 @@
 @startuml
 
-participant "Somewhere in the application" #lightgreen
+participant "Somewhere in the application" #white
+participant "InvalidationProcessor"
+participant "InvalidationHelper 1" #lightgreen
+participant "InvalidationLogger 1" #lightgreen
 
-"Somewhere in the application" -> InvalidationLogger: addInvalidationEntry(InvalidationEntry entry)
-InvalidationLogger --> "Somewhere in the application"
+"Somewhere in the application" -> "InvalidationProcessor": addInvalidationEntry(InvalidationEntry entry)
+activate InvalidationProcessor
+
+"InvalidationProcessor" -> "InvalidationHelper 1": getInvalidationLogger()
+activate "InvalidationHelper 1"
+"InvalidationHelper 1" --> "InvalidationProcessor"
+deactivate "InvalidationHelper 1"
+
+"InvalidationProcessor" -> "InvalidationLogger 1": addInvalidationEntry(InvalidationEntry entry)
+activate "InvalidationLogger 1"
+"InvalidationLogger 1" --> "InvalidationProcessor"
+deactivate "InvalidationLogger 1"
+
+"InvalidationProcessor" --> "Somewhere in the application"
+deactivate InvalidationProcessor
 
 ...
 
-"Somewhere in the application" -> InvalidationLogger: addInvalidationEntries(Collection<InvalidationEntry> entries)
-InvalidationLogger --> "Somewhere in the application"
+"Somewhere in the application" -> "InvalidationProcessor": addInvalidationEntries(Collection<InvalidationEntry> entries)
+activate InvalidationProcessor
+
+"InvalidationProcessor" -> "InvalidationHelper 1": getInvalidationLogger()
+activate "InvalidationHelper 1"
+"InvalidationHelper 1" --> "InvalidationProcessor"
+deactivate "InvalidationHelper 1"
+
+"InvalidationProcessor" -> "InvalidationLogger 1": addInvalidationEntries(Collection<InvalidationEntry> entries)
+activate "InvalidationLogger 1"
+"InvalidationLogger 1" --> "InvalidationProcessor"
+deactivate "InvalidationLogger 1"
+
+"InvalidationProcessor" --> "Somewhere in the application"
+deactivate InvalidationProcessor
 
 @enduml
