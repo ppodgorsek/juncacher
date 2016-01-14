@@ -1,10 +1,13 @@
 package com.github.ppodgorsek.juncacher.processor.impl;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.github.ppodgorsek.juncacher.helper.InvalidationHelper;
+import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.processor.InvalidationProcessor;
 
@@ -21,11 +24,54 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 	private InvalidationHelper<InvalidationEntry> invalidationHelper;
 
 	@Override
+	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
+
+		if (invalidationHelper == null) {
+			LOGGER.warn("The invalidation processor has no helper, impossible to add entries");
+		}
+		else {
+			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper
+					.getInvalidationLogger();
+
+			if (logger == null) {
+				LOGGER.warn("The invalidation helper has no logger, impossible to add entries");
+			}
+			else {
+				logger.addInvalidationEntries(entries);
+			}
+		}
+	}
+
+	@Override
+	public void addInvalidationEntry(final InvalidationEntry entry) {
+
+		if (invalidationHelper == null) {
+			LOGGER.warn("The invalidation processor has no helper, impossible to add entry");
+		}
+		else {
+			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper
+					.getInvalidationLogger();
+
+			if (logger == null) {
+				LOGGER.warn("The invalidation helper has no logger, impossible to add entry");
+			}
+			else {
+				logger.addInvalidationEntry(entry);
+			}
+		}
+	}
+
+	@Override
 	public void processEntries() {
 
 		LOGGER.debug("Processing the invalidation entries");
 
-		invalidationHelper.invalidateEntries();
+		if (invalidationHelper == null) {
+			LOGGER.warn("The invalidation processor has no helper, impossible to process entries");
+		}
+		else {
+			invalidationHelper.invalidateEntries();
+		}
 	}
 
 	protected InvalidationHelper<InvalidationEntry> getInvalidationHelper() {
