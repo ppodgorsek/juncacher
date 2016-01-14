@@ -4,14 +4,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.ppodgorsek.cache</groupId>
-	<artifactId>cache-invalidation</artifactId>
+	<groupId>com.github.ppodgorsek</groupId>
+	<artifactId>juncacher</artifactId>
 	<version>1.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Cache invalidation</name>
-	<description>Cache invalidation tool which allows to have a single point of eviction/update for all caches of an application (Varnish, ehcache, Solr, others).</description>
-	<url>https://github.com/ppodgorsek/cache-invalidation</url>
+	<name>JUncacher</name>
+	<description>JUncacher is a cache invalidation tool which allows to have a single point of eviction/update for all caches of an application (Varnish, ehcache, Solr, others).</description>
+	<url>https://github.com/ppodgorsek/juncacher</url>
 
 	<licenses>
 		<license>
@@ -30,9 +30,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@github.com:ppodgorsek/cache-invalidation.git</connection>
-		<developerConnection>scm:git:git@github.com:ppodgorsek/cache-invalidation.git</developerConnection>
-		<url>git@github.com:ppodgorsek/cache-invalidation.git</url>
+		<connection>scm:git:git@github.com:ppodgorsek/juncacher.git</connection>
+		<developerConnection>scm:git:git@github.com:ppodgorsek/juncacher.git</developerConnection>
+		<url>git@github.com:ppodgorsek/juncacher.git</url>
 	</scm>
 
 	<distributionManagement>
@@ -47,9 +47,9 @@
 	</distributionManagement>
 
 	<modules>
-		<module>cache-invalidation-core</module>
-		<module>cache-invalidation-spring</module>
-		<module>cache-invalidation-varnish</module>
+		<module>juncacher-core</module>
+		<module>juncacher-springcachemanager</module>
+		<module>juncacher-varnish</module>
 	</modules>
 
 	<properties>
@@ -92,18 +92,18 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>com.github.ppodgorsek.cache</groupId>
-				<artifactId>cache-invalidation-core</artifactId>
+				<groupId>com.github.ppodgorsek</groupId>
+				<artifactId>juncacher-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.ppodgorsek.cache</groupId>
-				<artifactId>cache-invalidation-spring</artifactId>
+				<groupId>com.github.ppodgorsek</groupId>
+				<artifactId>juncacher-springcachemanager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.github.ppodgorsek.cache</groupId>
-				<artifactId>cache-invalidation-varnish</artifactId>
+				<groupId>com.github.ppodgorsek</groupId>
+				<artifactId>juncacher-varnish</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -310,8 +310,7 @@
 
 								<if>
 									<not>
-										<equals arg1="${project.artifactId}" arg2="cache-invalidation"
-											trim="true" />
+										<equals arg1="${project.artifactId}" arg2="juncacher" trim="true" />
 									</not>
 									<then>
 										<move todir="${basedir}/../src/doc/reporting/${project.artifactId}"

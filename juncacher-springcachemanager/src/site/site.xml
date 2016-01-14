@@ -12,6 +12,7 @@
 			<item name="Introduction" href="index.html" />
 			<item name="Summary" href="project-summary.html" />
 			<item name="Site Map" href="sitemap.html" />
+			<item name="Back to parent" href="../index.html" />
 		</menu>
 
 		<menu ref="modules" />

@@ -1,9 +1,9 @@
-# Welcome to the Cache Invalidation project!
+# JUncacher, the Java cache invalidation project
 
-This project is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring Cache Manager, Solr, others).
+JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring Cache Manager, Solr, others).
 
 The supported cache types are currently:
-* Spring Cache Manager
+* Spring Cache Manager (usually ehcache)
 * Varnish
 * others can be easily implemented.
 
@@ -31,13 +31,13 @@ Two possibilities regarding changes:
 
 The invalidation entries will be stored by/read from the logger.
 
-![Collecting invalidation entries](https://github.com/ppodgorsek/cache-invalidation/blob/master/src/doc/uml/generated/collect_invalidation_entries.png)
+![Collecting invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/collect_invalidation_entries.png)
 
 ### Triggering the invalidation
 
 The invalidation processor is in charge of the invalidation. All calls from other parts of the application should be done to the processor to keep a consistent way of invalidating.
 
-![Processing invalidation entries](https://github.com/ppodgorsek/cache-invalidation/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
+![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
 
 The helpers/loggers of the same colour go together.
 
@@ -60,25 +60,25 @@ Each helper has its own associated logger in order to have finer control over th
 All artefacts of this project are available on Maven’s central repository, which makes it easy to use in your project.
 
 If you are using Maven, simply declare the following dependencies:
-* cache-invalidation-core:  
+* juncacher-core:  
 `    <dependency>`  
-`        <groupId>com.github.ppodgorsek.cache</groupId>`  
-`        <artifactId>cache-invalidation-core</artifactId>`  
-`        <version>${cache-invalidation.version}</version>`  
+`        <groupId>com.github.ppodgorsek</groupId>`  
+`        <artifactId>juncacher-core</artifactId>`  
+`        <version>${juncacher.version}</version>`  
 `    </dependency>`
 
-* cache-invalidation-spring:  
+* juncacher-springcachemanager:  
 `    <dependency>`  
-`        <groupId>com.github.ppodgorsek.cache</groupId>`  
-`        <artifactId>cache-invalidation-spring</artifactId>`  
-`        <version>${cache-invalidation.version}</version>`  
+`        <groupId>com.github.ppodgorsek</groupId>`  
+`        <artifactId>juncacher-springcachemanager</artifactId>`  
+`        <version>${juncacher.version}</version>`  
 `    </dependency>`
 
-* cache-invalidation-varnish:  
+* juncacher-varnish:  
 `    <dependency>`  
-`        <groupId>com.github.ppodgorsek.cache</groupId>`  
-`        <artifactId>cache-invalidation-varnish</artifactId>`  
-`        <version>${cache-invalidation.version}</version>`  
+`        <groupId>com.github.ppodgorsek</groupId>`  
+`        <artifactId>juncacher-varnish</artifactId>`  
+`        <version>${juncacher.version}</version>`  
 `    </dependency>`
 
-`cache-invalidation-core` is the only mandatory one, the others are optional and depend on what layers of cache your project has.
+`juncacher-core` is the only mandatory one, the others are optional and depend on what layers of cache your project has.
