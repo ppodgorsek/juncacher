@@ -35,7 +35,7 @@ Two possibilities regarding changes:
 
 ### Triggering the invalidation
 
-The invalidation processor is the only element which it is necessary to interact with.
+The invalidation processor is the only element which it is necessary to interact with from other parts of the application.
 
 ![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
 
