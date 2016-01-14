@@ -3,7 +3,7 @@
 JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring Cache Manager, Solr, others).
 
 The supported cache types are currently:
-* Spring Cache Manager (usually ehcache)
+* Spring CacheManager (usually ehcache)
 * Varnish
 * others can be easily implemented.
 
@@ -21,6 +21,8 @@ Cache invalidation happens in two steps:
 * identifying what the changes are,
 * performing the invalidation itself.
 
+For both steps, there is a single entry point: the invalidation processor. It is in charge of the collection and invalidation itself. All calls from other parts of the application should be done to the processor to keep a consistent way of invalidating.
+
 ### Identifying and collecting changes
 
 There are many ways to identify changes, such a service to collect changes is called an invalidation logger.
@@ -29,13 +31,11 @@ Two possibilities regarding changes:
 * Every time an element is modified, the corresponding invalidation entry is created and passed to the logger.
 * Elements have a last modification date that allows to dynamically fetch the changes from the data source. This could also be read from a JMS queue for example.
 
-The invalidation entries will be stored by/read from the logger.
-
 ![Collecting invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/collect_invalidation_entries.png)
 
 ### Triggering the invalidation
 
-The invalidation processor is in charge of the invalidation. All calls from other parts of the application should be done to the processor to keep a consistent way of invalidating.
+The invalidation processor is the only element which it is necessary to interact with.
 
 ![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
 
