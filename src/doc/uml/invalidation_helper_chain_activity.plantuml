@@ -1,0 +1,11 @@
+@startuml
+
+:Spring CacheManager (ehcache);
+
+:Solr;
+
+:Varnish;
+
+:JMS (for distant systems);
+
+@enduml
