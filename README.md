@@ -33,15 +33,23 @@ Two possibilities regarding changes:
 * Every time an element is modified, the corresponding invalidation entry is created and passed to the logger.
 * Elements have a last modification date that allows to dynamically fetch the changes from the data source. This could also be read from a JMS queue for example.
 
-![Collecting invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/collect_invalidation_entries.png)
+![Collecting invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/collect_invalidation_entries_sequence.png)
 
 ### Triggering the invalidation
 
 The invalidation processor is the only element which it is necessary to interact with from other parts of the application.
 
-![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries.png)
+![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_sequence.png)
 
 The helpers/loggers of the same colour go together.
+
+The invalidation of an entry is a bit more complex than just a single method call. For example, according to the type of entry:
+* Spring CacheManager: the cache regions will probably be different,
+* Varnish: the BAN/PURGE/GET URLs will probably be different too. 
+
+This problem is solved by helpers by using strategies that will indicate what to invalidate according to the type of entry.
+
+![Invalidation helper strategies](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_helper_strategies_activity.png)
 
 ### Consuming changes
 
@@ -56,6 +64,10 @@ A common use case is to have several layers of cache that must be correctly kept
 A helper is linked to one type of cache (Spring, Varnish, etc) and will be in charge of performing the invalidation for this type of cache. Helpers can be chained to invalidate a full stack.
 
 Each helper has its own associated logger in order to have finer control over the invalidation in case retries are necessary due to errors in one layer.
+
+Helpers can be chained to evict each level of cache, starting by the lower level and going outwards.
+
+![Chain of invalidation helpers](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_helper_chain_activity.png)
 
 ## How to use this project
 
