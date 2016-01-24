@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 import com.github.ppodgorsek.juncacher.varnish.http.HttpBanMethod;
 import com.github.ppodgorsek.juncacher.varnish.http.HttpPurgeMethod;
 
@@ -14,7 +15,7 @@ import com.github.ppodgorsek.juncacher.varnish.http.HttpPurgeMethod;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public interface VarnishUrlStrategy<T extends InvalidationEntry> {
+public interface VarnishUrlStrategy<T extends InvalidationEntry> extends InvalidationStrategy {
 
 	/**
 	 * Return the list of HTTP BAN methods to ban an entry from Varnish.
