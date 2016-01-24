@@ -1,5 +1,7 @@
 package com.github.ppodgorsek.juncacher.helper;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Required;
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
 import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
  * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This
@@ -20,7 +23,7 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry>
+public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry, S extends InvalidationStrategy>
 		implements InvalidationHelper<T> {
 
 	private static final Logger LOGGER = LoggerFactory
@@ -29,6 +32,8 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	private InvalidationLogger<T> invalidationLogger;
 
 	private InvalidationHelper<T> nextHelper;
+
+	private Map<String, S> strategies;
 
 	@Override
 	public void invalidateEntries() {
@@ -41,7 +46,14 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 
 		for (final T entry : invalidationLogger.getEntries()) {
 			try {
-				invalidateEntry(entry);
+				final S strategy = strategies.get(entry.getType().getValue());
+
+				if (strategy == null) {
+					LOGGER.info("No URL strategy found for entry {}", entry);
+				}
+				else {
+					invalidateEntry(entry, strategy);
+				}
 
 				if (nextLogger != null) {
 					nextLogger.addInvalidationEntry(entry);
@@ -66,10 +78,12 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	 *
 	 * @param entry
 	 *            The entry that must be invalidated.
+	 * @param strategy
+	 *            The strategy that must be used to invalidate the entry.
 	 * @throws InvalidationException
 	 *             An exception thrown if the invalidation couldn't be performed.
 	 */
-	protected abstract void invalidateEntry(T entry) throws InvalidationException;
+	protected abstract void invalidateEntry(T entry, S strategy) throws InvalidationException;
 
 	@Override
 	public InvalidationLogger<T> getInvalidationLogger() {
@@ -87,6 +101,15 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 
 	public void setNextHelper(final InvalidationHelper<T> helper) {
 		nextHelper = helper;
+	}
+
+	public Map<String, S> getStrategies() {
+		return strategies;
+	}
+
+	@Required
+	public void setStrategies(final Map<String, S> invalidationStrategies) {
+		strategies = invalidationStrategies;
 	}
 
 }
