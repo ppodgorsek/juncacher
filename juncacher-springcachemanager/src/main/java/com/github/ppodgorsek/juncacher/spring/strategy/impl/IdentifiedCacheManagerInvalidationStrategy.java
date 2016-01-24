@@ -24,7 +24,7 @@ public class IdentifiedCacheManagerInvalidationStrategy
 			.getLogger(IdentifiedCacheManagerInvalidationStrategy.class);
 
 	@Override
-	public void invalidate(final IdentifiedInvalidationEntry entry) throws InvalidationException {
+	public void evict(final IdentifiedInvalidationEntry entry) throws InvalidationException {
 
 		Assert.notNull(entry, "The entry is required");
 

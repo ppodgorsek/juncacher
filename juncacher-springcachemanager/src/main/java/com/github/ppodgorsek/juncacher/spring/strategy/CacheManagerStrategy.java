@@ -4,6 +4,7 @@ import org.springframework.cache.CacheManager;
 
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
  * Strategy used to determines which elements should be removed from the {@link CacheManager}.
@@ -11,14 +12,14 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public interface CacheManagerStrategy<T extends InvalidationEntry> {
+public interface CacheManagerStrategy<T extends InvalidationEntry> extends InvalidationStrategy {
 
 	/**
-	 * Clears the cache associated with an invalidation entry.
+	 * Evicts an entry from the cache.
 	 *
 	 * @param entry
 	 *            The entry that must be invalidated.
 	 */
-	void invalidate(T entry) throws InvalidationException;
+	void evict(T entry) throws InvalidationException;
 
 }
