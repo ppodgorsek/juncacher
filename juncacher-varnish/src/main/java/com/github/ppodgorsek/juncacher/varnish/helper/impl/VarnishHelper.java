@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.List;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -61,7 +62,7 @@ public class VarnishHelper<T extends InvalidationEntry>
 	 * @throws ConnectException
 	 *             An exception thrown if the remote host can't be contacted.
 	 */
-	protected void sendHttpMethod(final HttpMethodBase method) throws ConnectException {
+	protected void sendHttpMethod(final HttpRequestBase method) throws ConnectException {
 
 		int tries = 0;
 		boolean success = false;
@@ -70,9 +71,9 @@ public class VarnishHelper<T extends InvalidationEntry>
 			tries++;
 
 			try {
-				final int status = httpClient.executeMethod(method);
+				final HttpResponse response = httpClient.execute(method);
 
-				LOGGER.debug("Response status of the method execution: {}", status);
+				LOGGER.debug("Response status of the method execution: {}", response);
 
 				success = true;
 			}
@@ -98,10 +99,10 @@ public class VarnishHelper<T extends InvalidationEntry>
 	 * @throws ConnectException
 	 *             An exception thrown if the communication with Varnish fails.
 	 */
-	private void sendHttpMethods(final List<? extends HttpMethodBase> methods)
+	private void sendHttpMethods(final List<? extends HttpRequestBase> methods)
 			throws ConnectException {
 
-		for (final HttpMethodBase method : methods) {
+		for (final HttpRequestBase method : methods) {
 			sendHttpMethod(method);
 		}
 	}
