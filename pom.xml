@@ -389,7 +389,7 @@
 				<version>${cobertura-maven-plugin.version}</version>
 				<configuration>
 					<aggregate>true</aggregate>
-					<format>html</format>
+					<format>xml</format>
 				</configuration>
 			</plugin>
 			<plugin>
