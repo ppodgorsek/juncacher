@@ -14,9 +14,9 @@ public interface InvalidationHelper<T extends InvalidationEntry> {
 	/**
 	 * Returns the invalidation logger attached to this helper.
 	 *
-	 * @return The invalidation logger attached to this helper.
+	 * @return The logger attached to this helper.
 	 */
-	InvalidationLogger<T> getInvalidationLogger();
+	InvalidationLogger<T> getLogger();
 
 	/**
 	 * Invalidates the cache entries read from the invalidation logger.

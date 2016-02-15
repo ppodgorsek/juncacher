@@ -6,16 +6,15 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
 
 /**
- * Invalidation entry that has an identifier.
+ * Invalidation entry that has a type and an identifier.
  *
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class IdentifiedInvalidationEntry implements InvalidationEntry {
+public class IdentifiedInvalidationEntry extends TypedInvalidationEntry
+		implements InvalidationEntry {
 
-	private static final long serialVersionUID = 5096472886714074748L;
-
-	private InvalidationEntryType type;
+	private static final long serialVersionUID = 4306519736253591118L;
 
 	private String id;
 
@@ -30,12 +29,10 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 	public IdentifiedInvalidationEntry(final InvalidationEntryType entryType,
 			final String entryId) {
 
-		super();
+		super(entryType);
 
-		Assert.notNull(entryType, "The type is required");
 		Assert.notNull(entryId, "The ID is required");
 
-		type = entryType;
 		id = entryId;
 	}
 
@@ -46,11 +43,11 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 			return true;
 		}
 
-		if (obj instanceof IdentifiedInvalidationEntry) {
+		if (super.equals(obj) && obj instanceof IdentifiedInvalidationEntry) {
 
-			final IdentifiedInvalidationEntry entryType = (IdentifiedInvalidationEntry) obj;
+			final IdentifiedInvalidationEntry entry = (IdentifiedInvalidationEntry) obj;
 
-			return type.equals(entryType.getType()) && id.equals(entryType.getId());
+			return id.equals(entry.getId());
 		}
 
 		return false;
@@ -58,30 +55,18 @@ public class IdentifiedInvalidationEntry implements InvalidationEntry {
 
 	@Override
 	public int hashCode() {
-		return (type + "#" + id).hashCode();
+		return (getType() + "#" + id).hashCode();
 	}
 
 	@Override
 	public String toString() {
 
 		final StringBuilder sbld = new StringBuilder(getClass().getSimpleName());
-		sbld.append("[type=").append(type);
+		sbld.append("[type=").append(getType());
 		sbld.append(",id=").append(id);
 		sbld.append("]");
 
 		return sbld.toString();
-	}
-
-	@Override
-	public InvalidationEntryType getType() {
-		return type;
-	}
-
-	public void setType(final InvalidationEntryType newType) {
-
-		Assert.notNull(newType, "The type is required");
-
-		type = newType;
 	}
 
 	public String getId() {
