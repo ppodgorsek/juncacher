@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
-
 /**
  * Tests for the {@link IdentifiedInvalidationEntry} class.
  *
@@ -130,24 +128,6 @@ public class IdentifiedInvalidationEntryTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void idGetterSetterWithNullValue() {
 		identifiedInvalidationEntry.setId(null);
-	}
-
-	@Test
-	public void typeGetterSetterWithCorrectValue() {
-
-		final InvalidationEntryType newType = new ClassInvalidationEntryType(getClass());
-
-		identifiedInvalidationEntry.setType(newType);
-
-		final InvalidationEntryType type = identifiedInvalidationEntry.getType();
-
-		assertNotNull("The type shouldn't be null", type);
-		assertEquals("Wrong type", newType, type);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void typeGetterSetterWithNullValue() {
-		identifiedInvalidationEntry.setType(null);
 	}
 
 }
