@@ -30,8 +30,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 			LOGGER.warn("The invalidation processor has no helper, impossible to add entries");
 		}
 		else {
-			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper
-					.getInvalidationLogger();
+			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper.getLogger();
 
 			if (logger == null) {
 				LOGGER.warn("The invalidation helper has no logger, impossible to add entries");
@@ -49,8 +48,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 			LOGGER.warn("The invalidation processor has no helper, impossible to add entry");
 		}
 		else {
-			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper
-					.getInvalidationLogger();
+			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper.getLogger();
 
 			if (logger == null) {
 				LOGGER.warn("The invalidation helper has no logger, impossible to add entry");

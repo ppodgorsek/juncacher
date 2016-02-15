@@ -3,13 +3,13 @@ package com.github.ppodgorsek.juncacher.varnish.strategy;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.client.methods.HttpGet;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
-import com.github.ppodgorsek.juncacher.varnish.http.HttpBanMethod;
-import com.github.ppodgorsek.juncacher.varnish.http.HttpPurgeMethod;
+import com.github.ppodgorsek.juncacher.varnish.http.HttpBan;
+import com.github.ppodgorsek.juncacher.varnish.http.HttpPurge;
 
 /**
  * Holder containing the URLs for an invalidation entry type's BAN, GET and PURGE requests. Once the
@@ -35,14 +35,14 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	private String host;
 
 	@Override
-	public List<HttpBanMethod> getBanMethods(final T entry) {
+	public List<HttpBan> getBanMethods(final T entry) {
 
 		Assert.notNull(entry, "Entry is required");
 
-		final List<HttpBanMethod> methods = new ArrayList<>();
+		final List<HttpBan> methods = new ArrayList<>();
 
 		for (final String url : banUrls) {
-			final HttpBanMethod method = getBanMethod(entry, url);
+			final HttpBan method = getBanMethod(entry, url);
 			methods.add(method);
 		}
 
@@ -50,14 +50,14 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	}
 
 	@Override
-	public List<GetMethod> getGetMethods(final T entry) {
+	public List<HttpGet> getGetMethods(final T entry) {
 
 		Assert.notNull(entry, "Entry is required");
 
-		final List<GetMethod> methods = new ArrayList<>();
+		final List<HttpGet> methods = new ArrayList<>();
 
 		for (final String url : getUrls) {
-			final GetMethod method = getGetMethod(entry, url);
+			final HttpGet method = getHttpGet(entry, url);
 			methods.add(method);
 		}
 
@@ -65,14 +65,14 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	}
 
 	@Override
-	public List<HttpPurgeMethod> getPurgeMethods(final T entry) {
+	public List<HttpPurge> getPurgeMethods(final T entry) {
 
 		Assert.notNull(entry, "Entry is required");
 
-		final List<HttpPurgeMethod> methods = new ArrayList<>();
+		final List<HttpPurge> methods = new ArrayList<>();
 
 		for (final String url : purgeUrls) {
-			final HttpPurgeMethod method = getPurgeMethod(entry, url);
+			final HttpPurge method = getPurgeMethod(entry, url);
 			methods.add(method);
 		}
 
@@ -101,13 +101,13 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	 *            The URL.
 	 * @return The HTTP BAN method corresponding to the provided URL and entry.
 	 */
-	private HttpBanMethod getBanMethod(final T entry, final String url) {
+	private HttpBan getBanMethod(final T entry, final String url) {
 
 		final String replacedUrl = getUpdatedUrl(entry, url);
-		final HttpBanMethod method = new HttpBanMethod(replacedUrl);
+		final HttpBan method = new HttpBan(replacedUrl);
 
 		if (host != null) {
-			method.addRequestHeader(HOST_HEADER_NAME, host);
+			method.addHeader(HOST_HEADER_NAME, host);
 		}
 
 		return method;
@@ -123,13 +123,13 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	 *            The URL.
 	 * @return The HTTP GET method corresponding to the provided URL and entry.
 	 */
-	private GetMethod getGetMethod(final T entry, final String url) {
+	private HttpGet getHttpGet(final T entry, final String url) {
 
 		final String replacedUrl = getUpdatedUrl(entry, url);
-		final GetMethod method = new GetMethod(replacedUrl);
+		final HttpGet method = new HttpGet(replacedUrl);
 
 		if (host != null) {
-			method.addRequestHeader(HOST_HEADER_NAME, host);
+			method.addHeader(HOST_HEADER_NAME, host);
 		}
 
 		return method;
@@ -145,13 +145,13 @@ public abstract class AbstractVarnishUrlStrategy<T extends InvalidationEntry>
 	 *            The URL.
 	 * @return The HTTP PURGE method corresponding to the provided URL and entry.
 	 */
-	private HttpPurgeMethod getPurgeMethod(final T entry, final String url) {
+	private HttpPurge getPurgeMethod(final T entry, final String url) {
 
 		final String replacedUrl = getUpdatedUrl(entry, url);
-		final HttpPurgeMethod method = new HttpPurgeMethod(replacedUrl);
+		final HttpPurge method = new HttpPurge(replacedUrl);
 
 		if (host != null) {
-			method.addRequestHeader(HOST_HEADER_NAME, host);
+			method.addHeader(HOST_HEADER_NAME, host);
 		}
 
 		return method;
