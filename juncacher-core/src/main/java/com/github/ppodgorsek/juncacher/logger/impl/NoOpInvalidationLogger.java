@@ -11,7 +11,8 @@ import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
- * An invalidation logger that does nothing.
+ * An invalidation logger that does nothing: no adding, no consuming, always returns empty lists of
+ * entries.
  *
  * @since 1.0
  * @author Paul Podgorsek
