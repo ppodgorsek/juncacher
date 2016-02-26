@@ -48,39 +48,18 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 			nextLogger = nextHelper.getLogger();
 		}
 
-		if (interceptors != null) {
-			for (final InvalidationInterceptor interceptor : interceptors) {
-				interceptor.preHandle();
+		try {
+			preHandle();
+
+			for (final T entry : logger.getEntries()) {
+				invalidateEntry(entry, nextLogger);
 			}
+
+			postHandle();
 		}
-
-		for (final T entry : logger.getEntries()) {
-			try {
-				final S strategy = strategies.get(entry.getType().getValue());
-
-				if (strategy == null) {
-					LOGGER.info("No URL strategy found for entry {}", entry);
-				}
-				else {
-					invalidateEntry(entry, strategy);
-				}
-
-				if (nextLogger != null) {
-					nextLogger.addInvalidationEntry(entry);
-				}
-
-				logger.consume(entry);
-			}
-			catch (final InvalidationException e) {
-				LOGGER.warn("Impossible to invalidate the {} entry, will retry next time: {}",
-						entry, e.getMessage());
-			}
-		}
-
-		if (interceptors != null) {
-			for (final InvalidationInterceptor interceptor : interceptors) {
-				interceptor.postHandle();
-			}
+		catch (final InvalidationException e) {
+			LOGGER.warn("Impossible to perform a complete invalidation, will retry next time: {}",
+					e.getMessage());
 		}
 
 		if (nextHelper != null) {
@@ -89,7 +68,7 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	}
 
 	/**
-	 * Invalidate a cache entry.
+	 * Invalidates a cache entry.
 	 *
 	 * @param entry
 	 *            The entry that must be invalidated.
@@ -99,6 +78,69 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	 *             An exception thrown if the invalidation couldn't be performed.
 	 */
 	protected abstract void invalidateEntry(T entry, S strategy) throws InvalidationException;
+
+	/**
+	 * Invalidates a cache entry.
+	 *
+	 * @param entry
+	 *            The entry that must be invalidated.
+	 * @param nextLogger
+	 *            The logger to which the entry must be sent after having been invalidated by the
+	 *            current helper.
+	 */
+	private void invalidateEntry(final T entry, final InvalidationLogger<T> nextLogger) {
+
+		try {
+			final S strategy = strategies.get(entry.getType().getValue());
+
+			if (strategy == null) {
+				LOGGER.info("No strategy found for entry {}", entry);
+			}
+			else {
+				invalidateEntry(entry, strategy);
+			}
+
+			if (nextLogger != null) {
+				nextLogger.addInvalidationEntry(entry);
+			}
+
+			logger.consume(entry);
+		}
+		catch (final InvalidationException e) {
+			LOGGER.warn("Impossible to invalidate the {} entry, will retry next time: {}", entry,
+					e.getMessage());
+		}
+	}
+
+	/**
+	 * Performs the actions required before the invalidation happens.
+	 *
+	 * @throws InvalidationException
+	 *             An exception thrown by pre-invalidation checks.
+	 */
+	private void preHandle() throws InvalidationException {
+
+		if (interceptors != null) {
+			for (final InvalidationInterceptor interceptor : interceptors) {
+				interceptor.preHandle();
+			}
+		}
+	}
+
+	/**
+	 * Performs the actions required after the invalidation happens.
+	 *
+	 * @throws InvalidationException
+	 *             An exception thrown by post-invalidation checks.
+	 */
+	private void postHandle() throws InvalidationException {
+
+		if (interceptors != null) {
+			for (final InvalidationInterceptor interceptor : interceptors) {
+				interceptor.postHandle();
+			}
+		}
+	}
 
 	public void setInterceptors(final List<InvalidationInterceptor> newInterceptors) {
 		interceptors = newInterceptors;
