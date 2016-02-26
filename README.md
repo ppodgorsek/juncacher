@@ -37,11 +37,16 @@ Two possibilities regarding changes:
 * Every time an element is modified, the corresponding invalidation entry is created and passed to the logger.
 * Elements have a last modification date that allows to dynamically fetch the changes from the data source. This could also be read from a JMS queue for example.
 
+The invalidation processor has two methods to collect entries:
+* void addInvalidationEntries(Collection<InvalidationEntry> entries)
+* void addInvalidationEntry(InvalidationEntry entry)
+
 ![Collecting invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/collect_invalidation_entries_sequence.png)
 
 ### Triggering the invalidation
 
 The invalidation processor is the only element which it is necessary to interact with from other parts of the application.
+It has a single method to trigger the invalidation: void processEntries()
 
 ![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_sequence.png)
 
@@ -51,7 +56,7 @@ The invalidation of an entry is a bit more complex than just a single method cal
 * Spring CacheManager: the cache regions will probably be different,
 * Varnish: the BAN/PURGE/GET URLs will probably be different too. 
 
-This problem is solved by helpers by using strategies that will indicate what to invalidate according to the type of entry.
+This problem is solved in helpers by using strategies that will indicate what to invalidate according to the type of entry.
 
 ![Invalidation helper strategies](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_helper_strategies_activity.png)
 
