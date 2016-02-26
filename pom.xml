@@ -161,6 +161,13 @@
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 			</resource>
+			<resource>
+				<directory>${config.path.prefix}</directory>
+				<targetPath>META-INF</targetPath>
+				<includes>
+					<include>LICENSE</include>
+				</includes>
+			</resource>
 		</resources>
 
 		<testSourceDirectory>src/test/java</testSourceDirectory>
