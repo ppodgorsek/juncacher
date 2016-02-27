@@ -1,8 +1,8 @@
 package com.github.ppodgorsek.juncacher.varnish.strategy.impl;
 
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 import com.github.ppodgorsek.juncacher.varnish.strategy.AbstractVarnishUrlStrategy;
-import com.github.ppodgorsek.juncacher.varnish.strategy.VarnishUrlStrategy;
 
 /**
  * URL strategy that does no transformation to URLs.
@@ -11,7 +11,7 @@ import com.github.ppodgorsek.juncacher.varnish.strategy.VarnishUrlStrategy;
  * @author Paul Podgorsek
  */
 public class SimpleVarnishUrlStrategy extends AbstractVarnishUrlStrategy<InvalidationEntry>
-		implements VarnishUrlStrategy<InvalidationEntry> {
+		implements InvalidationStrategy<InvalidationEntry> {
 
 	@Override
 	protected String getUpdatedUrl(final InvalidationEntry entry, final String url) {
