@@ -6,15 +6,17 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.cache.CacheManager;
 
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
- * Holder containing the cache region names for a type of invalidation entry.
+ * Strategy used to determine which elements should be removed from the {@link CacheManager}. It
+ * contains the cache region names for a type of invalidation entry.
  *
  * @since 1.0
  * @author Paul Podgorsek
  */
 public abstract class AbstractCacheManagerInvalidationStrategy<T extends InvalidationEntry>
-		implements CacheManagerStrategy<T> {
+		implements InvalidationStrategy<T> {
 
 	private CacheManager cacheManager;
 

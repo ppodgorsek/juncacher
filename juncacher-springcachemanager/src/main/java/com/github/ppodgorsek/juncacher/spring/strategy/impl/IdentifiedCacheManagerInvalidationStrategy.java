@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
 import com.github.ppodgorsek.juncacher.model.impl.IdentifiedInvalidationEntry;
 import com.github.ppodgorsek.juncacher.spring.strategy.AbstractCacheManagerInvalidationStrategy;
-import com.github.ppodgorsek.juncacher.spring.strategy.CacheManagerStrategy;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
  * Strategy that evicts a single element from cache regions when an entry needs to be invalidated.
@@ -18,13 +18,13 @@ import com.github.ppodgorsek.juncacher.spring.strategy.CacheManagerStrategy;
  */
 public class IdentifiedCacheManagerInvalidationStrategy
 		extends AbstractCacheManagerInvalidationStrategy<IdentifiedInvalidationEntry>
-		implements CacheManagerStrategy<IdentifiedInvalidationEntry> {
+		implements InvalidationStrategy<IdentifiedInvalidationEntry> {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(IdentifiedCacheManagerInvalidationStrategy.class);
 
 	@Override
-	public void evict(final IdentifiedInvalidationEntry entry) throws InvalidationException {
+	public void invalidate(final IdentifiedInvalidationEntry entry) throws InvalidationException {
 
 		Assert.notNull(entry, "The entry is required");
 

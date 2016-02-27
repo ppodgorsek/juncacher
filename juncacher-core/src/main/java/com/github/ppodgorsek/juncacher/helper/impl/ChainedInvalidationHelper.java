@@ -1,4 +1,4 @@
-package com.github.ppodgorsek.juncacher.helper;
+package com.github.ppodgorsek.juncacher.helper.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
+import com.github.ppodgorsek.juncacher.helper.InvalidationHelper;
 import com.github.ppodgorsek.juncacher.interceptor.InvalidationInterceptor;
 import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
@@ -25,11 +26,10 @@ import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEntry, S extends InvalidationStrategy>
+public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends InvalidationStrategy<T>>
 		implements InvalidationHelper<T> {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AbstractChainedInvalidationHelper.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ChainedInvalidationHelper.class);
 
 	private List<InvalidationInterceptor> interceptors;
 
@@ -68,16 +68,15 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	}
 
 	/**
-	 * Invalidates a cache entry.
+	 * Determines the strategy to use to invalidate an entry.
 	 *
 	 * @param entry
 	 *            The entry that must be invalidated.
-	 * @param strategy
-	 *            The strategy that must be used to invalidate the entry.
-	 * @throws InvalidationException
-	 *             An exception thrown if the invalidation couldn't be performed.
+	 * @return The strategy to use to invalidate the entry, or {@code null} if there isn't one.
 	 */
-	protected abstract void invalidateEntry(T entry, S strategy) throws InvalidationException;
+	protected S getStrategyForEntry(final T entry) {
+		return strategies.get(entry.getType().getValue());
+	}
 
 	/**
 	 * Invalidates a cache entry.
@@ -90,14 +89,16 @@ public abstract class AbstractChainedInvalidationHelper<T extends InvalidationEn
 	 */
 	private void invalidateEntry(final T entry, final InvalidationLogger<T> nextLogger) {
 
+		LOGGER.info("Invalidating an entry: {}", entry);
+
 		try {
-			final S strategy = strategies.get(entry.getType().getValue());
+			final S strategy = getStrategyForEntry(entry);
 
 			if (strategy == null) {
 				LOGGER.info("No strategy found for entry {}", entry);
 			}
 			else {
-				invalidateEntry(entry, strategy);
+				strategy.invalidate(entry);
 			}
 
 			if (nextLogger != null) {

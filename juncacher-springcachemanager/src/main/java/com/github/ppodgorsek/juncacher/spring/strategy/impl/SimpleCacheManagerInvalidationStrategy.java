@@ -7,7 +7,7 @@ import org.springframework.cache.Cache;
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.spring.strategy.AbstractCacheManagerInvalidationStrategy;
-import com.github.ppodgorsek.juncacher.spring.strategy.CacheManagerStrategy;
+import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
  * Simple strategy that clears whole cache regions when an entry needs to be invalidated.
@@ -17,13 +17,13 @@ import com.github.ppodgorsek.juncacher.spring.strategy.CacheManagerStrategy;
  */
 public class SimpleCacheManagerInvalidationStrategy
 		extends AbstractCacheManagerInvalidationStrategy<InvalidationEntry>
-		implements CacheManagerStrategy<InvalidationEntry> {
+		implements InvalidationStrategy<InvalidationEntry> {
 
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SimpleCacheManagerInvalidationStrategy.class);
 
 	@Override
-	public void evict(final InvalidationEntry entry) throws InvalidationException {
+	public void invalidate(final InvalidationEntry entry) throws InvalidationException {
 
 		for (final String cacheName : getCacheNames()) {
 
