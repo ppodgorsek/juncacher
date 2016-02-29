@@ -59,7 +59,7 @@
 
 		<config.path.prefix>./</config.path.prefix>
 
-		<org.springframework.version>4.2.4.RELEASE</org.springframework.version>
+		<org.springframework.version>4.2.5.RELEASE</org.springframework.version>
 
 		<easymock.version>3.4</easymock.version>
 		<httpclient.version>4.5.1</httpclient.version>
