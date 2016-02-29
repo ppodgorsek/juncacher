@@ -6,7 +6,7 @@
 
 	<groupId>com.github.ppodgorsek</groupId>
 	<artifactId>juncacher</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>JUncacher</name>
@@ -59,7 +59,7 @@
 
 		<config.path.prefix>./</config.path.prefix>
 
-		<org.springframework.version>4.2.4.RELEASE</org.springframework.version>
+		<org.springframework.version>4.2.5.RELEASE</org.springframework.version>
 
 		<easymock.version>3.4</easymock.version>
 		<httpclient.version>4.5.1</httpclient.version>
