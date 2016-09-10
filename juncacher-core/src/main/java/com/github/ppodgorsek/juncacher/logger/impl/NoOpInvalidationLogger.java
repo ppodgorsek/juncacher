@@ -17,32 +17,32 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class NoOpInvalidationLogger<T extends InvalidationEntry> implements InvalidationLogger<T> {
+public class NoOpInvalidationLogger implements InvalidationLogger {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NoOpInvalidationLogger.class);
 
 	@Override
-	public void addInvalidationEntries(final Collection<T> entries) {
+	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
 		LOGGER.trace("Adding invalidation entries: {}", entries);
 	}
 
 	@Override
-	public void addInvalidationEntry(final T entry) {
+	public void addInvalidationEntry(final InvalidationEntry entry) {
 		LOGGER.trace("Adding an invalidation entry: {}", entry);
 	}
 
 	@Override
-	public void consume(final T entry) {
+	public void consume(final InvalidationEntry entry) {
 		LOGGER.trace("Consuming an invalidation entry: {}", entry);
 	}
 
 	@Override
-	public void consume(final List<T> entries) {
+	public void consume(final List<InvalidationEntry> entries) {
 		LOGGER.trace("Consuming invalidation entries: {}", entries);
 	}
 
 	@Override
-	public List<T> getEntries() {
+	public List<InvalidationEntry> getEntries() {
 
 		LOGGER.debug("Returning an empty list of elements");
 

@@ -12,6 +12,16 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 public interface InvalidationStrategy<T extends InvalidationEntry> {
 
 	/**
+	 * Checks whether the strategy can handle an invalidation entry or not.
+	 *
+	 * @param entry
+	 *            The invalidation entry.
+	 * @return {@code true} if the strategy can handle the provided invalidation entry,
+	 *         {@code false} otherwise.
+	 */
+	boolean canHandle(InvalidationEntry entry);
+
+	/**
 	 * Invalidates a cache entry.
 	 *
 	 * @param entry

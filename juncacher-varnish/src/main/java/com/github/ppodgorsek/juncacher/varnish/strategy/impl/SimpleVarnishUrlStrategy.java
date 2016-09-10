@@ -14,6 +14,11 @@ public class SimpleVarnishUrlStrategy extends AbstractVarnishUrlStrategy<Invalid
 		implements InvalidationStrategy<InvalidationEntry> {
 
 	@Override
+	public boolean canHandle(final InvalidationEntry entry) {
+		return true;
+	}
+
+	@Override
 	protected String getUpdatedUrl(final InvalidationEntry entry, final String url) {
 		return url;
 	}

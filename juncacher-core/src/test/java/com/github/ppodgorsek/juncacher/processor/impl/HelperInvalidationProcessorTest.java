@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.ppodgorsek.juncacher.helper.InvalidationHelper;
-import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
  * Tests for the {@link HelperInvalidationProcessor} class.
@@ -23,7 +22,7 @@ public class HelperInvalidationProcessorTest {
 	private HelperInvalidationProcessor helperInvalidationProcessor;
 
 	@Mock
-	private InvalidationHelper<InvalidationEntry> invalidationHelper;
+	private InvalidationHelper invalidationHelper;
 
 	@Before
 	public void setUp() {
@@ -41,8 +40,7 @@ public class HelperInvalidationProcessorTest {
 
 		helperInvalidationProcessor.setInvalidationHelper(invalidationHelper);
 
-		final InvalidationHelper<InvalidationEntry> helper = helperInvalidationProcessor
-				.getInvalidationHelper();
+		final InvalidationHelper helper = helperInvalidationProcessor.getInvalidationHelper();
 
 		assertNotNull("The invalidation helper should be set", helper);
 		assertEquals("Wrong invalidation helper", invalidationHelper, helper);

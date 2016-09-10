@@ -17,23 +17,23 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class InMemoryInvalidationLogger<T extends InvalidationEntry> implements
-		InvalidationLogger<T> {
+public class InMemoryInvalidationLogger implements InvalidationLogger {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryInvalidationLogger.class);
 
-	private final List<T> invalidationEntries = Collections.synchronizedList(new ArrayList<T>());
+	private final List<InvalidationEntry> invalidationEntries = Collections
+			.synchronizedList(new ArrayList<InvalidationEntry>());
 
 	@Override
-	public void addInvalidationEntries(final Collection<T> entries) {
+	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
 
-		for (final T entry : entries) {
+		for (final InvalidationEntry entry : entries) {
 			addInvalidationEntry(entry);
 		}
 	}
 
 	@Override
-	public void addInvalidationEntry(final T entry) {
+	public void addInvalidationEntry(final InvalidationEntry entry) {
 
 		LOGGER.debug("Adding an invalidation entry: {}", entry);
 
@@ -43,17 +43,17 @@ public class InMemoryInvalidationLogger<T extends InvalidationEntry> implements
 	}
 
 	@Override
-	public void consume(final T entry) {
+	public void consume(final InvalidationEntry entry) {
 		invalidationEntries.remove(entry);
 	}
 
 	@Override
-	public void consume(final List<T> entries) {
+	public void consume(final List<InvalidationEntry> entries) {
 		invalidationEntries.removeAll(entries);
 	}
 
 	@Override
-	public List<T> getEntries() {
+	public List<InvalidationEntry> getEntries() {
 		return new ArrayList<>(invalidationEntries);
 	}
 
