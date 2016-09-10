@@ -11,8 +11,8 @@ import java.io.Serializable;
 public interface InvalidationEntry extends Serializable {
 
 	/**
-	 * @return The entry's type.
+	 * @return The type of object referenced by the entry.
 	 */
-	InvalidationEntryType getType();
+	InvalidationEntryType getReferenceType();
 
 }

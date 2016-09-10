@@ -17,7 +17,7 @@ public class ClassInvalidationEntryTypeTest {
 	private final ClassInvalidationEntryType classInvalidationEntryType = new ClassInvalidationEntryType(
 			Object.class);
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = NullPointerException.class)
 	public void constructWithNullClass() {
 		new ClassInvalidationEntryType(null);
 	}

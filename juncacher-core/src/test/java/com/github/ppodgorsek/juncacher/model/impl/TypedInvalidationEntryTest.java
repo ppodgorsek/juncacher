@@ -84,21 +84,21 @@ public class TypedInvalidationEntryTest {
 	}
 
 	@Test
-	public void typeGetterSetterWithCorrectValue() {
+	public void referenceTypeGetterSetterWithCorrectValue() {
 
 		final InvalidationEntryType newType = new ClassInvalidationEntryType(getClass());
 
-		typedInvalidationEntry.setType(newType);
+		typedInvalidationEntry.setReferenceType(newType);
 
-		final InvalidationEntryType type = typedInvalidationEntry.getType();
+		final InvalidationEntryType type = typedInvalidationEntry.getReferenceType();
 
 		assertNotNull("The type shouldn't be null", type);
 		assertEquals("Wrong type", newType, type);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void typeGetterSetterWithNullValue() {
-		typedInvalidationEntry.setType(null);
+	public void referenceTypeGetterSetterWithNullValue() {
+		typedInvalidationEntry.setReferenceType(null);
 	}
 
 }

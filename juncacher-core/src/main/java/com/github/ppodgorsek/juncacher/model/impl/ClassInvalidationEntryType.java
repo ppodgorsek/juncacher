@@ -1,7 +1,5 @@
 package com.github.ppodgorsek.juncacher.model.impl;
 
-import org.springframework.util.Assert;
-
 import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
 
 /**
@@ -10,11 +8,10 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class ClassInvalidationEntryType implements InvalidationEntryType {
+public class ClassInvalidationEntryType extends SimpleInvalidationEntryType
+		implements InvalidationEntryType {
 
-	private static final long serialVersionUID = 2167431383283406191L;
-
-	private final Class<?> clazz;
+	private static final long serialVersionUID = -67680493220554287L;
 
 	/**
 	 * Default constructor.
@@ -23,12 +20,7 @@ public class ClassInvalidationEntryType implements InvalidationEntryType {
 	 *            The class to use to define this type.
 	 */
 	public ClassInvalidationEntryType(final Class<?> clazz) {
-
-		super();
-
-		Assert.notNull(clazz, "The class is required");
-
-		this.clazz = clazz;
+		super(clazz.getSimpleName());
 	}
 
 	@Override
@@ -46,21 +38,6 @@ public class ClassInvalidationEntryType implements InvalidationEntryType {
 		}
 
 		return false;
-	}
-
-	@Override
-	public String getValue() {
-		return clazz.getSimpleName();
-	}
-
-	@Override
-	public int hashCode() {
-		return getValue().hashCode();
-	}
-
-	@Override
-	public String toString() {
-		return getValue();
 	}
 
 }

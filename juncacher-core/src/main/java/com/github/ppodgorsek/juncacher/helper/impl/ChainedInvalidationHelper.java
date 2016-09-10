@@ -75,7 +75,7 @@ public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends In
 	 * @return The strategy to use to invalidate the entry, or {@code null} if there isn't one.
 	 */
 	protected S getStrategyForEntry(final T entry) {
-		return strategies.get(entry.getType().getValue());
+		return strategies.get(entry.getReferenceType().getValue());
 	}
 
 	/**
