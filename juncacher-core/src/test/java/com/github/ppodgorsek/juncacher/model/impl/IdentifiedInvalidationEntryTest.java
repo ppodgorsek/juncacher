@@ -113,21 +113,21 @@ public class IdentifiedInvalidationEntryTest {
 	}
 
 	@Test
-	public void idGetterSetterWithCorrectValue() {
+	public void referenceIdGetterSetterWithCorrectValue() {
 
 		final String newId = "newTestId";
 
-		identifiedInvalidationEntry.setId(newId);
+		identifiedInvalidationEntry.setReferenceId(newId);
 
-		final String id = identifiedInvalidationEntry.getId();
+		final String id = identifiedInvalidationEntry.getReferenceId();
 
 		assertNotNull("The ID shouldn't be null", id);
 		assertEquals("Wrong ID", newId, id);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void idGetterSetterWithNullValue() {
-		identifiedInvalidationEntry.setId(null);
+	public void referenceIdGetterSetterWithNullValue() {
+		identifiedInvalidationEntry.setReferenceId(null);
 	}
 
 }

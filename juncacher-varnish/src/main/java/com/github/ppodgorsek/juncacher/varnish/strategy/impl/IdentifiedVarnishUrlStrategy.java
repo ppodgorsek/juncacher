@@ -23,7 +23,7 @@ public class IdentifiedVarnishUrlStrategy
 
 	@Override
 	protected String getUpdatedUrl(final IdentifiedInvalidationEntry entry, final String url) {
-		return url.replaceAll(placeholder, entry.getId());
+		return url.replaceAll(placeholder, entry.getReferenceId());
 	}
 
 	public String getPlaceholder() {

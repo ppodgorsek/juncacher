@@ -1,9 +1,12 @@
-*~
+.externalToolBuilders/
 .settings/
 bin/
 classes/
 target/
+
+*~
 .classpath
 .project
 bin
+maven-eclipse.xml
 pom.xml.versionsBackup

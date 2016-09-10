@@ -2,7 +2,7 @@ package com.github.ppodgorsek.juncacher.model.impl;
 
 import org.springframework.util.Assert;
 
-import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.model.IdentifiableInvalidationEntry;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
 
 /**
@@ -12,28 +12,28 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
  * @author Paul Podgorsek
  */
 public class IdentifiedInvalidationEntry extends TypedInvalidationEntry
-		implements InvalidationEntry {
+		implements IdentifiableInvalidationEntry {
 
-	private static final long serialVersionUID = 4306519736253591118L;
+	private static final long serialVersionUID = -6026822219940792155L;
 
-	private String id;
+	private String referenceId;
 
 	/**
-	 * Default constructor allowing to set the type and ID.
+	 * Default constructor allowing to set the reference's type and ID.
 	 *
-	 * @param entryType
-	 *            The entry's type.
-	 * @param entryId
-	 *            The entry's ID.
+	 * @param referenceType
+	 *            The reference's type.
+	 * @param referenceId
+	 *            The reference's ID.
 	 */
-	public IdentifiedInvalidationEntry(final InvalidationEntryType entryType,
-			final String entryId) {
+	public IdentifiedInvalidationEntry(final InvalidationEntryType referenceType,
+			final String referenceId) {
 
-		super(entryType);
+		super(referenceType);
 
-		Assert.notNull(entryId, "The ID is required");
+		Assert.notNull(referenceId, "The reference ID is required");
 
-		id = entryId;
+		this.referenceId = referenceId;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class IdentifiedInvalidationEntry extends TypedInvalidationEntry
 
 			final IdentifiedInvalidationEntry entry = (IdentifiedInvalidationEntry) obj;
 
-			return id.equals(entry.getId());
+			return referenceId.equals(entry.getReferenceId());
 		}
 
 		return false;
@@ -55,29 +55,30 @@ public class IdentifiedInvalidationEntry extends TypedInvalidationEntry
 
 	@Override
 	public int hashCode() {
-		return (getType() + "#" + id).hashCode();
+		return (getReferenceType() + "#" + referenceId).hashCode();
 	}
 
 	@Override
 	public String toString() {
 
 		final StringBuilder sbld = new StringBuilder(getClass().getSimpleName());
-		sbld.append("[type=").append(getType());
-		sbld.append(",id=").append(id);
+		sbld.append("[type=").append(getReferenceType());
+		sbld.append(",id=").append(referenceId);
 		sbld.append("]");
 
 		return sbld.toString();
 	}
 
-	public String getId() {
-		return id;
+	@Override
+	public String getReferenceId() {
+		return referenceId;
 	}
 
-	public void setId(final String newId) {
+	public void setReferenceId(final String newReferenceId) {
 
-		Assert.notNull(newId, "The ID is required");
+		Assert.notNull(newReferenceId, "The reference ID is required");
 
-		id = newId;
+		referenceId = newReferenceId;
 	}
 
 }

@@ -13,23 +13,23 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntryType;
  */
 public class TypedInvalidationEntry implements InvalidationEntry {
 
-	private static final long serialVersionUID = -454660306174964926L;
+	private static final long serialVersionUID = 8000944776525026607L;
 
-	private InvalidationEntryType type;
+	private InvalidationEntryType referenceType;
 
 	/**
-	 * Default constructor allowing to set the type.
+	 * Default constructor allowing to set the reference type.
 	 *
-	 * @param entryType
-	 *            The entry's type.
+	 * @param referenceType
+	 *            The reference's type.
 	 */
-	public TypedInvalidationEntry(final InvalidationEntryType entryType) {
+	public TypedInvalidationEntry(final InvalidationEntryType referenceType) {
 
 		super();
 
-		Assert.notNull(entryType, "The type is required");
+		Assert.notNull(referenceType, "The reference type is required");
 
-		type = entryType;
+		this.referenceType = referenceType;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class TypedInvalidationEntry implements InvalidationEntry {
 
 			final TypedInvalidationEntry entry = (TypedInvalidationEntry) obj;
 
-			return type.equals(entry.getType());
+			return referenceType.equals(entry.getReferenceType());
 		}
 
 		return false;
@@ -51,29 +51,29 @@ public class TypedInvalidationEntry implements InvalidationEntry {
 
 	@Override
 	public int hashCode() {
-		return type.hashCode();
+		return referenceType.hashCode();
 	}
 
 	@Override
 	public String toString() {
 
 		final StringBuilder sbld = new StringBuilder(getClass().getSimpleName());
-		sbld.append("[type=").append(type);
+		sbld.append("[type=").append(referenceType);
 		sbld.append("]");
 
 		return sbld.toString();
 	}
 
 	@Override
-	public InvalidationEntryType getType() {
-		return type;
+	public InvalidationEntryType getReferenceType() {
+		return referenceType;
 	}
 
-	public void setType(final InvalidationEntryType newType) {
+	public void setReferenceType(final InvalidationEntryType newType) {
 
-		Assert.notNull(newType, "The type is required");
+		Assert.notNull(newType, "The reference type is required");
 
-		type = newType;
+		referenceType = newType;
 	}
 
 }

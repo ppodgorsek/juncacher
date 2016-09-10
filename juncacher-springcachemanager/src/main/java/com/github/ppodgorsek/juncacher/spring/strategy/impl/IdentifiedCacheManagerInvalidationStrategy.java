@@ -28,7 +28,7 @@ public class IdentifiedCacheManagerInvalidationStrategy
 
 		Assert.notNull(entry, "The entry is required");
 
-		final String entryId = entry.getId();
+		final String entryId = entry.getReferenceId();
 
 		if (entryId == null) {
 			LOGGER.warn("Invalidation entry {} has no ID, can't evict it from the cache", entry);
