@@ -1,42 +1,42 @@
 @startuml
 
 participant "Somewhere in the application" #white
-participant "InvalidationProcessor"
-participant "InvalidationHelper 1" #lightgreen
-participant "InvalidationLogger 1" #lightgreen
+participant "InvalidationManager"
+participant "InvalidationProcessor 1" #lightgreen
+participant "InvalidationCollector 1" #lightgreen
 
-"Somewhere in the application" -> "InvalidationProcessor": addInvalidationEntry(InvalidationEntry entry)
-activate InvalidationProcessor
+"Somewhere in the application" -> "InvalidationManager": addInvalidationEntry(InvalidationEntry entry)
+activate InvalidationManager
 
-"InvalidationProcessor" -> "InvalidationHelper 1": getInvalidationLogger()
-activate "InvalidationHelper 1"
-"InvalidationHelper 1" --> "InvalidationProcessor"
-deactivate "InvalidationHelper 1"
+"InvalidationManager" -> "InvalidationProcessor 1": getInvalidationCollector()
+activate "InvalidationProcessor 1"
+"InvalidationProcessor 1" --> "InvalidationManager"
+deactivate "InvalidationProcessor 1"
 
-"InvalidationProcessor" -> "InvalidationLogger 1": addInvalidationEntry(InvalidationEntry entry)
-activate "InvalidationLogger 1"
-"InvalidationLogger 1" --> "InvalidationProcessor"
-deactivate "InvalidationLogger 1"
+"InvalidationManager" -> "InvalidationCollector 1": addInvalidationEntry(InvalidationEntry entry)
+activate "InvalidationCollector 1"
+"InvalidationCollector 1" --> "InvalidationManager"
+deactivate "InvalidationCollector 1"
 
-"InvalidationProcessor" --> "Somewhere in the application"
-deactivate InvalidationProcessor
+"InvalidationManager" --> "Somewhere in the application"
+deactivate InvalidationManager
 
 ...
 
-"Somewhere in the application" -> "InvalidationProcessor": addInvalidationEntries(Collection<InvalidationEntry> entries)
-activate InvalidationProcessor
+"Somewhere in the application" -> "InvalidationManager": addInvalidationEntries(Collection<InvalidationEntry> entries)
+activate InvalidationManager
 
-"InvalidationProcessor" -> "InvalidationHelper 1": getInvalidationLogger()
-activate "InvalidationHelper 1"
-"InvalidationHelper 1" --> "InvalidationProcessor"
-deactivate "InvalidationHelper 1"
+"InvalidationManager" -> "InvalidationProcessor 1": getInvalidationCollector()
+activate "InvalidationProcessor 1"
+"InvalidationProcessor 1" --> "InvalidationManager"
+deactivate "InvalidationProcessor 1"
 
-"InvalidationProcessor" -> "InvalidationLogger 1": addInvalidationEntries(Collection<InvalidationEntry> entries)
-activate "InvalidationLogger 1"
-"InvalidationLogger 1" --> "InvalidationProcessor"
-deactivate "InvalidationLogger 1"
+"InvalidationManager" -> "InvalidationCollector 1": addInvalidationEntries(Collection<InvalidationEntry> entries)
+activate "InvalidationCollector 1"
+"InvalidationCollector 1" --> "InvalidationManager"
+deactivate "InvalidationCollector 1"
 
-"InvalidationProcessor" --> "Somewhere in the application"
-deactivate InvalidationProcessor
+"InvalidationManager" --> "Somewhere in the application"
+deactivate InvalidationManager
 
 @enduml

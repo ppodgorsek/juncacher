@@ -9,13 +9,13 @@ corresponding to the entry type;
 
 if (strategy == null) then (yes)
 	:No invalidation required by the
-	helper for this entry;
+	processor for this entry;
 else (no)
 	:Invalidate the entry
 	using the strategy found;
 endif
 
-:Send the entry to the next helper;
+:Send the entry to the next processor;
 
 stop
 

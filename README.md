@@ -27,17 +27,17 @@ Cache invalidation happens in two steps:
 * identifying what the changes are,
 * performing the invalidation itself.
 
-For both steps, there is a single entry point: the invalidation processor. It is in charge of the collection and invalidation itself. All calls from other parts of the application should be done to the processor to keep a consistent way of invalidating.
+For both steps, there is a single entry point: the invalidation manager. It is in charge of the collection and invalidation itself. All calls from other parts of the application should be done to the manager to keep a consistent way of invalidating.
 
 ### Identifying and collecting changes
 
-There are many ways to identify changes, such a service to collect changes is called an invalidation logger.
+There are many ways to identify changes, such a service to collect changes is called an invalidation collector.
 
 Two possibilities regarding changes:
-* Every time an element is modified, the corresponding invalidation entry is created and passed to the logger.
+* Every time an element is modified, the corresponding invalidation entry is created and passed to the collector.
 * Elements have a last modification date that allows to dynamically fetch the changes from the data source. This could also be read from a JMS queue for example.
 
-The invalidation processor has two methods to collect entries:
+The invalidation manager has two methods to collect entries:
 * void addInvalidationEntries(Collection<InvalidationEntry> entries)
 * void addInvalidationEntry(InvalidationEntry entry)
 
@@ -45,20 +45,20 @@ The invalidation processor has two methods to collect entries:
 
 ### Triggering the invalidation
 
-The invalidation processor is the only element which it is necessary to interact with from other parts of the application.
+The invalidation manager is the only element which it is necessary to interact with from other parts of the application.
 It has a single method to trigger the invalidation: void processEntries()
 
 ![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_sequence.png)
 
-The helpers/loggers of the same colour go together.
+The processors/collectors having the same colour go together.
 
 The invalidation of an entry is a bit more complex than just a single method call. For example, according to the type of entry:
 * Spring CacheManager: the cache regions will probably be different,
 * Varnish: the BAN/PURGE/GET URLs will probably be different too. 
 
-This problem is solved in helpers by using strategies that will indicate what to invalidate according to the type of entry.
+This problem is solved in processors by using strategies that will indicate what to invalidate according to the type of entry.
 
-![Invalidation helper strategies](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_helper_strategies_activity.png)
+![Invalidation processor strategies](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_processor_strategies_activity.png)
 
 ### Consuming changes
 
@@ -70,17 +70,17 @@ It is possible that an invalidation fails therefore we don’t want to remove el
 
 A common use case is to have several layers of cache that must be correctly kept up-to-date, for example a Spring Cache (usually ehcache) and an HTTP cache (possibly Varnish).
 
-A helper is linked to one type of cache (Spring, Varnish, etc) and will be in charge of performing the invalidation for this type of cache. Helpers can be chained to invalidate a full stack.
+A processor is linked to one type of cache (Spring, Varnish, etc) and will be in charge of performing the invalidation for this type of cache. Processors can be chained to invalidate a full stack.
 
-Each helper has its own associated logger in order to have finer control over the invalidation in case retries are necessary due to errors in one layer.
+Each processor has its own associated collector in order to have finer control over the invalidation in case retries are necessary due to errors in one layer.
 
-Helpers can be chained to evict each level of cache, starting by the lower level and going outwards.
+Processors can be chained to evict each level of cache, starting by the lower level and going outwards.
 
-![Chain of invalidation helpers](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_helper_chain_activity.png)
+![Chain of invalidation processors](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/invalidation_processor_chain_activity.png)
 
 ## How to use this project
 
-All artefacts of this project are available on Maven’s central repository, which makes it easy to use in your project.
+All artefacts of this project are available on Maven’s central repository, which makes it easy to use in your projects.
 
 If you are using Maven, simply declare the following dependencies:
 * juncacher-core:  
