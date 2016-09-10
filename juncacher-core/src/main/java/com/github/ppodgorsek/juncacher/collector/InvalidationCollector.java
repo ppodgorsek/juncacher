@@ -1,20 +1,20 @@
-package com.github.ppodgorsek.juncacher.logger;
+package com.github.ppodgorsek.juncacher.collector;
 
 import java.util.Collection;
 import java.util.List;
 
-import com.github.ppodgorsek.juncacher.logger.impl.InMemoryInvalidationLogger;
+import com.github.ppodgorsek.juncacher.collector.impl.InMemoryInvalidationCollector;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
- * Logs invalidation entries and processes them. Most use cases will simply use an in-memory logger
- * ({@link InMemoryInvalidationLogger}) but other implementations could for example persist them to
- * a database in order to have only one instance of a cluster performing invalidations.
+ * Collects invalidation entries them. Most use cases will simply use an in-memory collection
+ * ({@link InMemoryInvalidationCollector}) but other implementations could for example persist them
+ * to a database in order to have only one instance of a cluster performing invalidations.
  *
- * @since 1.0
+ * @since 1.1
  * @author Paul Podgorsek
  */
-public interface InvalidationLogger {
+public interface InvalidationCollector {
 
 	/**
 	 * Add invalidation entries to the queue of elements to process.

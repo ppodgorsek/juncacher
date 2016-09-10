@@ -1,4 +1,4 @@
-package com.github.ppodgorsek.juncacher.helper.impl;
+package com.github.ppodgorsek.juncacher.processor.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -7,16 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
-import com.github.ppodgorsek.juncacher.helper.InvalidationHelper;
 import com.github.ppodgorsek.juncacher.interceptor.InvalidationInterceptor;
-import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.processor.InvalidationProcessor;
 import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
- * {@link InvalidationHelper} implementation allowing to chain helpers to each other. This could for
- * example allow the following chain:
+ * {@link InvalidationProcessor} implementation allowing to chain processors to each other. This
+ * could for example allow the following chain:
  * <ol>
  * <li>Spring Cache Manager</li>
  * <li>Solr</li>
@@ -26,33 +26,34 @@ import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
  * Child classes can override the invalidateEntry() and invalidateEntries() methods in order to have
  * a better control of the invalidation mechanism.
  *
- * @since 1.0
+ * @since 1.1
  * @author Paul Podgorsek
  */
-public class ChainedInvalidationHelper implements InvalidationHelper {
+public class ChainedInvalidationProcessor implements InvalidationProcessor {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ChainedInvalidationHelper.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(ChainedInvalidationProcessor.class);
 
 	private List<InvalidationInterceptor> interceptors;
 
-	private InvalidationLogger logger;
+	private InvalidationCollector collector;
 
-	private InvalidationHelper nextHelper;
+	private InvalidationProcessor nextProcessor;
 
 	private Map<String, InvalidationStrategy<InvalidationEntry>> strategies;
 
 	@Override
 	public void invalidateEntries() {
 
-		InvalidationLogger nextLogger = null;
+		InvalidationCollector nextCollector = null;
 
-		if (nextHelper != null) {
-			nextLogger = nextHelper.getLogger();
+		if (nextProcessor != null) {
+			nextCollector = nextProcessor.getCollector();
 		}
 
 		try {
 			preHandle();
-			invalidateEntries(logger.getEntries(), nextLogger);
+			invalidateEntries(collector.getEntries(), nextCollector);
 			postHandle();
 		}
 		catch (final InvalidationException e) {
@@ -60,8 +61,8 @@ public class ChainedInvalidationHelper implements InvalidationHelper {
 					e.getMessage());
 		}
 
-		if (nextHelper != null) {
-			nextHelper.invalidateEntries();
+		if (nextProcessor != null) {
+			nextProcessor.invalidateEntries();
 		}
 	}
 
@@ -70,15 +71,15 @@ public class ChainedInvalidationHelper implements InvalidationHelper {
 	 *
 	 * @param entries
 	 *            The entries that must be invalidated.
-	 * @param nextLogger
-	 *            The logger to which the entry must be sent after having been invalidated by the
-	 *            current helper.
+	 * @param nextCollector
+	 *            The collector to which the entries must be sent after having been invalidated by
+	 *            the current processor.
 	 */
 	protected void invalidateEntries(final List<InvalidationEntry> entries,
-			final InvalidationLogger nextLogger) {
+			final InvalidationCollector nextCollector) {
 
 		for (final InvalidationEntry entry : entries) {
-			invalidateEntry(entry, nextLogger);
+			invalidateEntry(entry, nextCollector);
 		}
 	}
 
@@ -87,12 +88,12 @@ public class ChainedInvalidationHelper implements InvalidationHelper {
 	 *
 	 * @param entry
 	 *            The entry that must be invalidated.
-	 * @param nextLogger
-	 *            The logger to which the entry must be sent after having been invalidated by the
-	 *            current helper.
+	 * @param nextCollector
+	 *            The collector to which the entry must be sent after having been invalidated by the
+	 *            current processor.
 	 */
 	protected void invalidateEntry(final InvalidationEntry entry,
-			final InvalidationLogger nextLogger) {
+			final InvalidationCollector nextCollector) {
 
 		LOGGER.info("Invalidating an entry: {}", entry);
 
@@ -112,11 +113,11 @@ public class ChainedInvalidationHelper implements InvalidationHelper {
 				}
 			}
 
-			if (nextLogger != null) {
-				nextLogger.addInvalidationEntry(entry);
+			if (nextCollector != null) {
+				nextCollector.addInvalidationEntry(entry);
 			}
 
-			logger.consume(entry);
+			collector.consume(entry);
 		}
 		catch (final InvalidationException e) {
 			LOGGER.warn("Impossible to invalidate the {} entry, will retry next time: {}", entry,
@@ -163,21 +164,21 @@ public class ChainedInvalidationHelper implements InvalidationHelper {
 	}
 
 	@Override
-	public InvalidationLogger getLogger() {
-		return logger;
+	public InvalidationCollector getCollector() {
+		return collector;
 	}
 
 	@Required
-	public void setLogger(final InvalidationLogger newLogger) {
-		logger = newLogger;
+	public void setCollector(final InvalidationCollector newCollector) {
+		collector = newCollector;
 	}
 
-	protected InvalidationHelper getNextHelper() {
-		return nextHelper;
+	protected InvalidationProcessor getNextProcessor() {
+		return nextProcessor;
 	}
 
-	public void setNextHelper(final InvalidationHelper helper) {
-		nextHelper = helper;
+	public void setNextProcessor(final InvalidationProcessor processor) {
+		nextProcessor = processor;
 	}
 
 	public Map<String, InvalidationStrategy<InvalidationEntry>> getStrategies() {
