@@ -1,5 +1,6 @@
 package com.github.ppodgorsek.juncacher.varnish.strategy.impl;
 
+import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.model.impl.IdentifiedInvalidationEntry;
 import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 import com.github.ppodgorsek.juncacher.varnish.strategy.AbstractVarnishUrlStrategy;
@@ -20,6 +21,11 @@ public class IdentifiedVarnishUrlStrategy
 	 * The placeholder that will be replaced in the URL by the entry's ID.
 	 */
 	private String placeholder = DEFAULT_PLACEHOLDER;
+
+	@Override
+	public boolean canHandle(final InvalidationEntry entry) {
+		return entry instanceof IdentifiedInvalidationEntry;
+	}
 
 	@Override
 	protected String getUpdatedUrl(final IdentifiedInvalidationEntry entry, final String url) {

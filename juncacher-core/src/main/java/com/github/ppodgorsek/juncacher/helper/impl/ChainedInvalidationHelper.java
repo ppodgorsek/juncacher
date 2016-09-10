@@ -15,34 +15,36 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
 
 /**
- * Abstract {@link InvalidationHelper} implementation allowing to chain helpers to each other. This
- * could for example allow the following chain:
+ * {@link InvalidationHelper} implementation allowing to chain helpers to each other. This could for
+ * example allow the following chain:
  * <ol>
  * <li>Spring Cache Manager</li>
  * <li>Solr</li>
  * <li>Varnish</li>
  * </ol>
  *
+ * Child classes can override the invalidateEntry() and invalidateEntries() methods in order to have
+ * a better control of the invalidation mechanism.
+ *
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends InvalidationStrategy<T>>
-		implements InvalidationHelper<T> {
+public class ChainedInvalidationHelper implements InvalidationHelper {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChainedInvalidationHelper.class);
 
 	private List<InvalidationInterceptor> interceptors;
 
-	private InvalidationLogger<T> logger;
+	private InvalidationLogger logger;
 
-	private InvalidationHelper<T> nextHelper;
+	private InvalidationHelper nextHelper;
 
-	private Map<String, S> strategies;
+	private Map<String, InvalidationStrategy<InvalidationEntry>> strategies;
 
 	@Override
 	public void invalidateEntries() {
 
-		InvalidationLogger<T> nextLogger = null;
+		InvalidationLogger nextLogger = null;
 
 		if (nextHelper != null) {
 			nextLogger = nextHelper.getLogger();
@@ -50,11 +52,7 @@ public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends In
 
 		try {
 			preHandle();
-
-			for (final T entry : logger.getEntries()) {
-				invalidateEntry(entry, nextLogger);
-			}
-
+			invalidateEntries(logger.getEntries(), nextLogger);
 			postHandle();
 		}
 		catch (final InvalidationException e) {
@@ -68,14 +66,20 @@ public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends In
 	}
 
 	/**
-	 * Determines the strategy to use to invalidate an entry.
+	 * Invalidates cache entries.
 	 *
-	 * @param entry
-	 *            The entry that must be invalidated.
-	 * @return The strategy to use to invalidate the entry, or {@code null} if there isn't one.
+	 * @param entries
+	 *            The entries that must be invalidated.
+	 * @param nextLogger
+	 *            The logger to which the entry must be sent after having been invalidated by the
+	 *            current helper.
 	 */
-	protected S getStrategyForEntry(final T entry) {
-		return strategies.get(entry.getReferenceType().getValue());
+	protected void invalidateEntries(final List<InvalidationEntry> entries,
+			final InvalidationLogger nextLogger) {
+
+		for (final InvalidationEntry entry : entries) {
+			invalidateEntry(entry, nextLogger);
+		}
 	}
 
 	/**
@@ -87,18 +91,25 @@ public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends In
 	 *            The logger to which the entry must be sent after having been invalidated by the
 	 *            current helper.
 	 */
-	private void invalidateEntry(final T entry, final InvalidationLogger<T> nextLogger) {
+	protected void invalidateEntry(final InvalidationEntry entry,
+			final InvalidationLogger nextLogger) {
 
 		LOGGER.info("Invalidating an entry: {}", entry);
 
 		try {
-			final S strategy = getStrategyForEntry(entry);
+			final InvalidationStrategy<InvalidationEntry> strategy = strategies
+					.get(entry.getReferenceType().getValue());
 
 			if (strategy == null) {
 				LOGGER.info("No strategy found for entry {}", entry);
 			}
 			else {
-				strategy.invalidate(entry);
+				if (strategy.canHandle(entry)) {
+					strategy.invalidate(entry);
+				}
+				else {
+					LOGGER.warn("The {} strategy can't handle the entry: {}", strategy, entry);
+				}
 			}
 
 			if (nextLogger != null) {
@@ -143,34 +154,39 @@ public class ChainedInvalidationHelper<T extends InvalidationEntry, S extends In
 		}
 	}
 
+	public List<InvalidationInterceptor> getInterceptors() {
+		return interceptors;
+	}
+
 	public void setInterceptors(final List<InvalidationInterceptor> newInterceptors) {
 		interceptors = newInterceptors;
 	}
 
 	@Override
-	public InvalidationLogger<T> getLogger() {
+	public InvalidationLogger getLogger() {
 		return logger;
 	}
 
 	@Required
-	public void setLogger(final InvalidationLogger<T> newLogger) {
+	public void setLogger(final InvalidationLogger newLogger) {
 		logger = newLogger;
 	}
 
-	protected InvalidationHelper<T> getNextHelper() {
+	protected InvalidationHelper getNextHelper() {
 		return nextHelper;
 	}
 
-	public void setNextHelper(final InvalidationHelper<T> helper) {
+	public void setNextHelper(final InvalidationHelper helper) {
 		nextHelper = helper;
 	}
 
-	public Map<String, S> getStrategies() {
+	public Map<String, InvalidationStrategy<InvalidationEntry>> getStrategies() {
 		return strategies;
 	}
 
 	@Required
-	public void setStrategies(final Map<String, S> invalidationStrategies) {
+	public void setStrategies(
+			final Map<String, InvalidationStrategy<InvalidationEntry>> invalidationStrategies) {
 		strategies = invalidationStrategies;
 	}
 

@@ -16,17 +16,16 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class DelegateInvalidationLogger<T extends InvalidationEntry>
-		implements InvalidationLogger<T> {
+public class DelegateInvalidationLogger implements InvalidationLogger {
 
-	private List<InvalidationLogger<T>> invalidationLoggers;
+	private List<InvalidationLogger> invalidationLoggers;
 
 	private boolean addToAllDelegates;
 
 	@Override
-	public void addInvalidationEntries(final Collection<T> entries) {
+	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
 
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
+		for (final InvalidationLogger invalidationLogger : getInvalidationLoggers()) {
 			invalidationLogger.addInvalidationEntries(entries);
 
 			if (!isAddToAllDelegates()) {
@@ -36,9 +35,9 @@ public class DelegateInvalidationLogger<T extends InvalidationEntry>
 	}
 
 	@Override
-	public void addInvalidationEntry(final T entry) {
+	public void addInvalidationEntry(final InvalidationEntry entry) {
 
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
+		for (final InvalidationLogger invalidationLogger : getInvalidationLoggers()) {
 			invalidationLogger.addInvalidationEntry(entry);
 
 			if (!isAddToAllDelegates()) {
@@ -48,39 +47,39 @@ public class DelegateInvalidationLogger<T extends InvalidationEntry>
 	}
 
 	@Override
-	public void consume(final T entry) {
+	public void consume(final InvalidationEntry entry) {
 
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
+		for (final InvalidationLogger invalidationLogger : getInvalidationLoggers()) {
 			invalidationLogger.consume(entry);
 		}
 	}
 
 	@Override
-	public void consume(final List<T> entries) {
+	public void consume(final List<InvalidationEntry> entries) {
 
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
+		for (final InvalidationLogger invalidationLogger : getInvalidationLoggers()) {
 			invalidationLogger.consume(entries);
 		}
 	}
 
 	@Override
-	public List<T> getEntries() {
+	public List<InvalidationEntry> getEntries() {
 
-		final List<T> entries = new ArrayList<>();
+		final List<InvalidationEntry> entries = new ArrayList<>();
 
-		for (final InvalidationLogger<T> invalidationLogger : getInvalidationLoggers()) {
+		for (final InvalidationLogger invalidationLogger : getInvalidationLoggers()) {
 			entries.addAll(invalidationLogger.getEntries());
 		}
 
 		return entries;
 	}
 
-	public List<InvalidationLogger<T>> getInvalidationLoggers() {
+	public List<InvalidationLogger> getInvalidationLoggers() {
 		return invalidationLoggers;
 	}
 
 	@Required
-	public void setInvalidationLoggers(final List<InvalidationLogger<T>> loggers) {
+	public void setInvalidationLoggers(final List<InvalidationLogger> loggers) {
 		invalidationLoggers = loggers;
 	}
 

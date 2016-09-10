@@ -21,7 +21,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HelperInvalidationProcessor.class);
 
-	private InvalidationHelper<InvalidationEntry> invalidationHelper;
+	private InvalidationHelper invalidationHelper;
 
 	@Override
 	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
@@ -30,7 +30,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 			LOGGER.warn("The invalidation processor has no helper, impossible to add entries");
 		}
 		else {
-			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper.getLogger();
+			final InvalidationLogger logger = invalidationHelper.getLogger();
 
 			if (logger == null) {
 				LOGGER.warn("The invalidation helper has no logger, impossible to add entries");
@@ -48,7 +48,7 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 			LOGGER.warn("The invalidation processor has no helper, impossible to add entry");
 		}
 		else {
-			final InvalidationLogger<InvalidationEntry> logger = invalidationHelper.getLogger();
+			final InvalidationLogger logger = invalidationHelper.getLogger();
 
 			if (logger == null) {
 				LOGGER.warn("The invalidation helper has no logger, impossible to add entry");
@@ -72,12 +72,12 @@ public class HelperInvalidationProcessor implements InvalidationProcessor {
 		}
 	}
 
-	protected InvalidationHelper<InvalidationEntry> getInvalidationHelper() {
+	protected InvalidationHelper getInvalidationHelper() {
 		return invalidationHelper;
 	}
 
 	@Required
-	public void setInvalidationHelper(final InvalidationHelper<InvalidationEntry> helper) {
+	public void setInvalidationHelper(final InvalidationHelper helper) {
 		invalidationHelper = helper;
 	}
 

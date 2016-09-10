@@ -23,6 +23,11 @@ public class SimpleCacheManagerInvalidationStrategy
 			.getLogger(SimpleCacheManagerInvalidationStrategy.class);
 
 	@Override
+	public boolean canHandle(final InvalidationEntry entry) {
+		return true;
+	}
+
+	@Override
 	public void invalidate(final InvalidationEntry entry) throws InvalidationException {
 
 		for (final String cacheName : getCacheNames()) {

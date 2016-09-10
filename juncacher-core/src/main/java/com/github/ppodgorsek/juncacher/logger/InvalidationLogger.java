@@ -14,7 +14,7 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public interface InvalidationLogger<T extends InvalidationEntry> {
+public interface InvalidationLogger {
 
 	/**
 	 * Add invalidation entries to the queue of elements to process.
@@ -22,7 +22,7 @@ public interface InvalidationLogger<T extends InvalidationEntry> {
 	 * @param entries
 	 *            The entries that must be added to the queue.
 	 */
-	void addInvalidationEntries(Collection<T> entries);
+	void addInvalidationEntries(Collection<InvalidationEntry> entries);
 
 	/**
 	 * Add an invalidation entry to the queue of elements to process.
@@ -30,7 +30,7 @@ public interface InvalidationLogger<T extends InvalidationEntry> {
 	 * @param entry
 	 *            The entry that must be added to the queue.
 	 */
-	void addInvalidationEntry(T entry);
+	void addInvalidationEntry(InvalidationEntry entry);
 
 	/**
 	 * Consumes an invalidation entry. Once an entry has been consumed, it won't be in the logger
@@ -39,7 +39,7 @@ public interface InvalidationLogger<T extends InvalidationEntry> {
 	 * @param entry
 	 *            The entry to consume.
 	 */
-	void consume(T entry);
+	void consume(InvalidationEntry entry);
 
 	/**
 	 * Consumes invalidation entries. Once the entries have been consumed, they won't be in the
@@ -48,13 +48,13 @@ public interface InvalidationLogger<T extends InvalidationEntry> {
 	 * @param entries
 	 *            The entries to consume.
 	 */
-	void consume(List<T> entries);
+	void consume(List<InvalidationEntry> entries);
 
 	/**
 	 * Return the list of invalidation entries that have already been added.
 	 *
 	 * @return The list of entries that were already added, or an empty list if there are none.
 	 */
-	List<T> getEntries();
+	List<InvalidationEntry> getEntries();
 
 }

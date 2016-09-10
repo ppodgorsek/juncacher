@@ -16,53 +16,52 @@ import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
  * @since 1.0
  * @author Paul Podgorsek
  */
-public class CompositeInvalidationLogger<T extends InvalidationEntry>
-		implements InvalidationLogger<T> {
+public class CompositeInvalidationLogger implements InvalidationLogger {
 
-	private InvalidationLogger<T> reader;
+	private InvalidationLogger reader;
 
-	private InvalidationLogger<T> consumer;
+	private InvalidationLogger consumer;
 
 	@Override
-	public void addInvalidationEntries(final Collection<T> entries) {
+	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
 		reader.addInvalidationEntries(entries);
 	}
 
 	@Override
-	public void addInvalidationEntry(final T entry) {
+	public void addInvalidationEntry(final InvalidationEntry entry) {
 		reader.addInvalidationEntry(entry);
 	}
 
 	@Override
-	public void consume(final T entry) {
+	public void consume(final InvalidationEntry entry) {
 		consumer.consume(entry);
 	}
 
 	@Override
-	public void consume(final List<T> entries) {
+	public void consume(final List<InvalidationEntry> entries) {
 		consumer.consume(entries);
 	}
 
 	@Override
-	public List<T> getEntries() {
+	public List<InvalidationEntry> getEntries() {
 		return reader.getEntries();
 	}
 
-	public InvalidationLogger<T> getReader() {
+	public InvalidationLogger getReader() {
 		return reader;
 	}
 
 	@Required
-	public void setReader(final InvalidationLogger<T> entryReader) {
+	public void setReader(final InvalidationLogger entryReader) {
 		reader = entryReader;
 	}
 
-	public InvalidationLogger<T> getConsumer() {
+	public InvalidationLogger getConsumer() {
 		return consumer;
 	}
 
 	@Required
-	public void setConsumer(final InvalidationLogger<T> entryConsumer) {
+	public void setConsumer(final InvalidationLogger entryConsumer) {
 		consumer = entryConsumer;
 	}
 
