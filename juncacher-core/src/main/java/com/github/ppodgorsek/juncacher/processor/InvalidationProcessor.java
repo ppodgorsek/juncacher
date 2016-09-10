@@ -1,37 +1,25 @@
 package com.github.ppodgorsek.juncacher.processor;
 
-import java.util.Collection;
-
-import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
+import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 
 /**
- * Processes invalidation entries that were previously created. These entries could be for example
- * read from a logger or directly from a database.
+ * Processor that invalidates entries.
  *
- * @since 1.0
+ * @since 1.1
  * @author Paul Podgorsek
  */
 public interface InvalidationProcessor {
 
 	/**
-	 * Adds invalidation entries to the queue of elements to process.
+	 * Returns the invalidation collector attached to this processor.
 	 *
-	 * @param entries
-	 *            The entries that must be added to the queue.
+	 * @return The collector attached to this processor.
 	 */
-	void addInvalidationEntries(Collection<InvalidationEntry> entries);
+	InvalidationCollector getCollector();
 
 	/**
-	 * Adds an invalidation entry to the queue of elements to process.
-	 *
-	 * @param entry
-	 *            The entry that must be added to the queue.
+	 * Invalidates the cache entries read from the invalidation collector.
 	 */
-	void addInvalidationEntry(InvalidationEntry entry);
-
-	/**
-	 * Process the invalidation entries which already exist.
-	 */
-	void processEntries();
+	void invalidateEntries();
 
 }

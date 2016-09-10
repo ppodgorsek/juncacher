@@ -1,26 +1,26 @@
-package com.github.ppodgorsek.juncacher.logger.impl;
+package com.github.ppodgorsek.juncacher.collector.impl;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
-import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
+import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
- * Composite invalidation logger that has one logger to read / add entries, another logger to
- * consume entries. This is useful when having a chain of invalidation helpers if entries must only
- * be consumed when all helpers have processed them.
+ * Composite invalidation collector that has one collector to read / add entries, another to consume
+ * entries. This is useful when having a chain of invalidation processors if entries must only be
+ * consumed when all processors have processed them.
  *
- * @since 1.0
+ * @since 1.1
  * @author Paul Podgorsek
  */
-public class CompositeInvalidationLogger implements InvalidationLogger {
+public class CompositeInvalidationCollector implements InvalidationCollector {
 
-	private InvalidationLogger reader;
+	private InvalidationCollector reader;
 
-	private InvalidationLogger consumer;
+	private InvalidationCollector consumer;
 
 	@Override
 	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
@@ -47,21 +47,21 @@ public class CompositeInvalidationLogger implements InvalidationLogger {
 		return reader.getEntries();
 	}
 
-	public InvalidationLogger getReader() {
+	public InvalidationCollector getReader() {
 		return reader;
 	}
 
 	@Required
-	public void setReader(final InvalidationLogger entryReader) {
+	public void setReader(final InvalidationCollector entryReader) {
 		reader = entryReader;
 	}
 
-	public InvalidationLogger getConsumer() {
+	public InvalidationCollector getConsumer() {
 		return consumer;
 	}
 
 	@Required
-	public void setConsumer(final InvalidationLogger entryConsumer) {
+	public void setConsumer(final InvalidationCollector entryConsumer) {
 		consumer = entryConsumer;
 	}
 

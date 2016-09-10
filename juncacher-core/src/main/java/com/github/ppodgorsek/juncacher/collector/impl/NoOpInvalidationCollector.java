@@ -1,4 +1,4 @@
-package com.github.ppodgorsek.juncacher.logger.impl;
+package com.github.ppodgorsek.juncacher.collector.impl;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,19 +7,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.ppodgorsek.juncacher.logger.InvalidationLogger;
+import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
- * An invalidation logger that does nothing: no adding, no consuming, always returns empty lists of
- * entries.
+ * An invalidation collector that does nothing: no adding, no consuming, always returns empty lists
+ * of entries.
  *
- * @since 1.0
+ * @since 1.1
  * @author Paul Podgorsek
  */
-public class NoOpInvalidationLogger implements InvalidationLogger {
+public class NoOpInvalidationCollector implements InvalidationCollector {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(NoOpInvalidationLogger.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(NoOpInvalidationCollector.class);
 
 	@Override
 	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
