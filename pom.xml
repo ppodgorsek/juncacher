@@ -57,7 +57,8 @@
 		<project.java.version>1.8</project.java.version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<config.path.prefix>./</config.path.prefix>
+		<config.path.prefix>.</config.path.prefix>
+		<config.path.output>target</config.path.output>
 
 		<org.springframework.version>4.3.2.RELEASE</org.springframework.version>
 
@@ -151,22 +152,15 @@
 	</dependencyManagement>
 
 	<build>
-		<directory>target</directory>
-		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<directory>${config.path.output}</directory>
+		<outputDirectory>${config.path.output}/classes</outputDirectory>
+		<testOutputDirectory>${config.path.output}/test-classes</testOutputDirectory>
 
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
-			</resource>
-			<resource>
-				<directory>${config.path.prefix}</directory>
-				<targetPath>META-INF</targetPath>
-				<includes>
-					<include>LICENSE</include>
-				</includes>
 			</resource>
 		</resources>
 
@@ -266,11 +260,11 @@
 					<additionalConfig>
 						<file>
 							<name>.settings/org.eclipse.jdt.core.prefs</name>
-							<location>${config.path.prefix}src/eclipse/org.eclipse.jdt.core.prefs</location>
+							<location>${config.path.prefix}/src/eclipse/org.eclipse.jdt.core.prefs</location>
 						</file>
 						<file>
 							<name>.settings/org.eclipse.jdt.ui.prefs</name>
-							<location>${config.path.prefix}src/eclipse/org.eclipse.jdt.ui.prefs</location>
+							<location>${config.path.prefix}/src/eclipse/org.eclipse.jdt.ui.prefs</location>
 						</file>
 					</additionalConfig>
 				</configuration>
@@ -290,8 +284,8 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>site-generation</id>
-						<phase>site</phase>
+						<id>license-copy</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
@@ -302,20 +296,14 @@
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties"
 									classpathref="maven.plugin.classpath" />
 
-								<if>
-									<not>
-										<equals arg1="${project.artifactId}" arg2="juncacher" trim="true" />
-									</not>
-									<then>
-										<move todir="${basedir}/../src/doc/reporting/${project.artifactId}"
-											failonerror="true">
-											<fileset dir="${basedir}/src/doc/reporting" />
-										</move>
-										<delete includeemptydirs="true">
-											<fileset dir="${basedir}/src/doc" />
-										</delete>
-									</then>
-								</if>
+								<copy file="${config.path.prefix}/LICENSE" tofile="${config.path.output}/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE" tofile="${config.path.output}/classes/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE" tofile="${config.path.output}/test-classes/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE" tofile="${config.path.output}/apidocs/META-INF/LICENSE"
+									failonerror="true" />
 							</tasks>
 						</configuration>
 					</execution>
@@ -447,7 +435,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${maven-checkstyle-plugin.version}</version>
 				<configuration>
-					<configLocation>${config.path.prefix}src/site/checkstyle.xml</configLocation>
+					<configLocation>${config.path.prefix}/src/site/checkstyle.xml</configLocation>
 					<enableRSS>false</enableRSS>
 					<enableRulesSummary>false</enableRulesSummary>
 					<encoding>UTF-8</encoding>
@@ -471,7 +459,7 @@
 					<linkXRef>true</linkXRef>
 					<minimumTokens>100</minimumTokens>
 					<rulesets>
-						<ruleset>${config.path.prefix}src/site/pmd.xml</ruleset>
+						<ruleset>${config.path.prefix}/src/site/pmd.xml</ruleset>
 					</rulesets>
 					<sourceEncoding>UTF-8</sourceEncoding>
 					<targetJdk>${project.java.version}</targetJdk>
