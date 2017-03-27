@@ -41,7 +41,7 @@
 	</scm>
 
 	<properties>
-		<config.path.prefix>../</config.path.prefix>
+		<config.path.prefix>..</config.path.prefix>
 	</properties>
 
 	<dependencies>
