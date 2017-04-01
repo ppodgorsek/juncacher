@@ -10,3 +10,4 @@ target/
 bin
 maven-eclipse.xml
 pom.xml.versionsBackup
+release.properties
