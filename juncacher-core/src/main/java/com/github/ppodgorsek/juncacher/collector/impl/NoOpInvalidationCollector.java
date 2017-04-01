@@ -2,7 +2,6 @@ package com.github.ppodgorsek.juncacher.collector.impl;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +36,12 @@ public class NoOpInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public void consume(final List<InvalidationEntry> entries) {
+	public void consume(final Collection<InvalidationEntry> entries) {
 		LOGGER.trace("Consuming invalidation entries: {}", entries);
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public Collection<InvalidationEntry> getEntries() {
 
 		LOGGER.debug("Returning an empty list of elements");
 

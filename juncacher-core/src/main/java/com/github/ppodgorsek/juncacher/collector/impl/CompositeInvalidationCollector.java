@@ -1,7 +1,6 @@
 package com.github.ppodgorsek.juncacher.collector.impl;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
@@ -38,12 +37,12 @@ public class CompositeInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public void consume(final List<InvalidationEntry> entries) {
+	public void consume(final Collection<InvalidationEntry> entries) {
 		consumer.consume(entries);
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public Collection<InvalidationEntry> getEntries() {
 		return reader.getEntries();
 	}
 

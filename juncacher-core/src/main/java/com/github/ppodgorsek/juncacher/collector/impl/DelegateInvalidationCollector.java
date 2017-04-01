@@ -56,7 +56,7 @@ public class DelegateInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public void consume(final List<InvalidationEntry> entries) {
+	public void consume(final Collection<InvalidationEntry> entries) {
 
 		for (final InvalidationCollector invalidationCollector : getInvalidationCollectors()) {
 			invalidationCollector.consume(entries);
@@ -64,7 +64,7 @@ public class DelegateInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public Collection<InvalidationEntry> getEntries() {
 
 		final List<InvalidationEntry> entries = new ArrayList<>();
 

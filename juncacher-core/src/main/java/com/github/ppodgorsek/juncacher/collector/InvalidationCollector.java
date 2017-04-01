@@ -1,7 +1,6 @@
 package com.github.ppodgorsek.juncacher.collector;
 
 import java.util.Collection;
-import java.util.List;
 
 import com.github.ppodgorsek.juncacher.collector.impl.InMemoryInvalidationCollector;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
@@ -33,7 +32,7 @@ public interface InvalidationCollector {
 	void addInvalidationEntry(InvalidationEntry entry);
 
 	/**
-	 * Consumes an invalidation entry. Once an entry has been consumed, it won't be in the logger
+	 * Consumes an invalidation entry. Once an entry has been consumed, it won't be in the collector
 	 * anymore.
 	 *
 	 * @param entry
@@ -43,18 +42,19 @@ public interface InvalidationCollector {
 
 	/**
 	 * Consumes invalidation entries. Once the entries have been consumed, they won't be in the
-	 * logger anymore.
+	 * collector anymore.
 	 *
 	 * @param entries
 	 *            The entries to consume.
 	 */
-	void consume(List<InvalidationEntry> entries);
+	void consume(Collection<InvalidationEntry> entries);
 
 	/**
-	 * Return the list of invalidation entries that have already been added.
+	 * Return the collection of invalidation entries that have already been added.
 	 *
-	 * @return The list of entries that were already added, or an empty list if there are none.
+	 * @return The collection of entries that were already added, or an empty collection if there
+	 *         are none.
 	 */
-	List<InvalidationEntry> getEntries();
+	Collection<InvalidationEntry> getEntries();
 
 }

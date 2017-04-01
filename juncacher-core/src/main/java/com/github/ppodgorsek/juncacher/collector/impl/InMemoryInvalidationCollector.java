@@ -49,12 +49,12 @@ public class InMemoryInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public void consume(final List<InvalidationEntry> entries) {
+	public void consume(final Collection<InvalidationEntry> entries) {
 		invalidationEntries.removeAll(entries);
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public Collection<InvalidationEntry> getEntries() {
 		return new ArrayList<>(invalidationEntries);
 	}
 
