@@ -1,0 +1,56 @@
+@startuml
+
+participant "InvalidationManager"
+participant "InvalidationProcessor 1" #lightgreen
+participant "InvalidationCollector 1" #lightgreen
+participant "InvalidationInterceptor"
+participant "InvalidationProcessor 2" #lightblue
+participant "InvalidationCollector 2" #lightblue
+
+-> InvalidationManager: invalidateEntries()
+activate InvalidationManager
+
+loop processorWithCollector: processorsWithCollectors
+	InvalidationManager -> "InvalidationCollector 1": getEntries()
+	activate "InvalidationCollector 1"
+	"InvalidationCollector 1" --> "InvalidationManager": entriesToInvalidate
+	deactivate "InvalidationCollector 1"
+
+	"InvalidationManager" -> "InvalidationProcessor 1": invalidateEntries(entriesToInvalidate)
+	activate "InvalidationProcessor 1"
+
+	"InvalidationProcessor 1" -> "InvalidationInterceptor": preHandle()
+	activate "InvalidationInterceptor"
+	"InvalidationInterceptor" --> "InvalidationProcessor 1"
+	deactivate "InvalidationInterceptor"
+
+	loop entry: entriesToInvalidate
+		"InvalidationProcessor 1" -> "InvalidationProcessor 1": invalidateEntry(InvalidationEntry entry)
+	end
+
+	"InvalidationProcessor 1" -> "InvalidationInterceptor": postHandle()
+	activate "InvalidationInterceptor"
+	"InvalidationInterceptor" --> "InvalidationProcessor 1"
+	deactivate "InvalidationInterceptor"
+
+	"InvalidationProcessor 1" --> "InvalidationManager": invalidatedEntries
+	deactivate "InvalidationProcessor 1"
+
+	InvalidationManager -> "InvalidationCollector 1": consume(invalidatedEntries)
+	activate "InvalidationCollector 1"
+	"InvalidationCollector 1" --> "InvalidationManager"
+	deactivate "InvalidationCollector 1"
+
+	InvalidationManager -> "InvalidationCollector 2": addInvalidationEntries(invalidatedEntries)
+	activate "InvalidationCollector 2"
+	"InvalidationCollector 2" --> "InvalidationManager"
+	deactivate "InvalidationCollector 2"
+
+	"InvalidationManager" -> "InvalidationProcessor 2"
+	note over "InvalidationProcessor 2","InvalidationCollector 2": The same logic is performed by the\nnext processor/collector in the loop
+	"InvalidationProcessor 2" --> "InvalidationManager"
+end
+
+deactivate InvalidationManager
+
+@enduml
