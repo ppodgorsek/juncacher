@@ -2,7 +2,6 @@ package com.github.ppodgorsek.juncacher.varnish.http;
 
 import java.net.URI;
 
-import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.client.methods.HttpRequestBase;
 
 /**
@@ -11,7 +10,6 @@ import org.apache.http.client.methods.HttpRequestBase;
  * @since 1.0
  * @author ppodgorsek
  */
-@NotThreadSafe
 public class HttpBan extends HttpRequestBase {
 
 	private static final String METHOD_NAME = "BAN";
