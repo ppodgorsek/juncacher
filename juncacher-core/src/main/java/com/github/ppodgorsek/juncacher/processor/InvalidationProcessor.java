@@ -1,6 +1,8 @@
 package com.github.ppodgorsek.juncacher.processor;
 
-import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
+import java.util.Collection;
+
+import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 
 /**
  * Processor that invalidates entries.
@@ -11,15 +13,12 @@ import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 public interface InvalidationProcessor {
 
 	/**
-	 * Returns the invalidation collector attached to this processor.
+	 * Invalidates cache entries.
 	 *
-	 * @return The collector attached to this processor.
+	 * @param entries
+	 *            The entries that must be invalidated.
+	 * @return The entries that have been invalidated.
 	 */
-	InvalidationCollector getCollector();
-
-	/**
-	 * Invalidates the cache entries read from the invalidation collector.
-	 */
-	void invalidateEntries();
+	Collection<InvalidationEntry> invalidateEntries(Collection<InvalidationEntry> entries);
 
 }

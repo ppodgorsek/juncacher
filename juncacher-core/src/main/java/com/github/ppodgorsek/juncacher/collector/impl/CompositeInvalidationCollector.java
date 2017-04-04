@@ -1,9 +1,8 @@
 package com.github.ppodgorsek.juncacher.collector.impl;
 
 import java.util.Collection;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.Assert;
 
 import com.github.ppodgorsek.juncacher.collector.InvalidationCollector;
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
@@ -22,6 +21,26 @@ public class CompositeInvalidationCollector implements InvalidationCollector {
 
 	private InvalidationCollector consumer;
 
+	/**
+	 * Default constructor that allows to set the reader and consumer collectors.
+	 *
+	 * @param reader
+	 *            The collector from which entries will be read.
+	 * @param consumer
+	 *            The collector in which entries will be put.
+	 */
+	public CompositeInvalidationCollector(final InvalidationCollector reader,
+			final InvalidationCollector consumer) {
+
+		super();
+
+		Assert.notNull(reader, "The reader is required");
+		Assert.notNull(consumer, "The consumer is required");
+
+		this.reader = reader;
+		this.consumer = consumer;
+	}
+
 	@Override
 	public void addInvalidationEntries(final Collection<InvalidationEntry> entries) {
 		reader.addInvalidationEntries(entries);
@@ -38,12 +57,12 @@ public class CompositeInvalidationCollector implements InvalidationCollector {
 	}
 
 	@Override
-	public void consume(final List<InvalidationEntry> entries) {
+	public void consume(final Collection<InvalidationEntry> entries) {
 		consumer.consume(entries);
 	}
 
 	@Override
-	public List<InvalidationEntry> getEntries() {
+	public Collection<InvalidationEntry> getEntries() {
 		return reader.getEntries();
 	}
 
@@ -51,8 +70,10 @@ public class CompositeInvalidationCollector implements InvalidationCollector {
 		return reader;
 	}
 
-	@Required
 	public void setReader(final InvalidationCollector entryReader) {
+
+		Assert.notNull(entryReader, "The reader is required");
+
 		reader = entryReader;
 	}
 
@@ -60,8 +81,10 @@ public class CompositeInvalidationCollector implements InvalidationCollector {
 		return consumer;
 	}
 
-	@Required
 	public void setConsumer(final InvalidationCollector entryConsumer) {
+
+		Assert.notNull(entryConsumer, "The consumer is required");
+
 		consumer = entryConsumer;
 	}
 

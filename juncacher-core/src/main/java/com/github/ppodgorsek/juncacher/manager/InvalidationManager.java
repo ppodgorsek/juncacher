@@ -34,4 +34,20 @@ public interface InvalidationManager {
 	 */
 	void processEntries();
 
+	/**
+	 * Processes invalidation entries immediately.
+	 *
+	 * @param entries
+	 *            The entries that must be invalidated immediately.
+	 */
+	void processEntries(Collection<InvalidationEntry> entries);
+
+	/**
+	 * Processes an invalidation entry immediately.
+	 *
+	 * @param entry
+	 *            The entry that must be invalidated immediately.
+	 */
+	void processEntry(InvalidationEntry entry);
+
 }
