@@ -1,10 +1,11 @@
 # JUncacher, the Java cache invalidation project
 
-JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring CacheManager, Solr, others).
+JUncacher is a cache invalidation tool for Java programs which allows to have a single point of eviction/update for all caches of an application (Varnish, Spring CacheManager, ElasticSearch, Solr, others).
 
 Caches can have many forms:
 * Spring CacheManager (usually ehcache)
 * Varnish
+* ElasticSearch
 * Solr
 * JMS queues (to evict entries from distant systems)
 * others can be easily implemented.
@@ -45,12 +46,21 @@ The invalidation manager has two methods to collect entries:
 
 ### Triggering the invalidation
 
-The invalidation manager is the only element which it is necessary to interact with from other parts of the application.
-It has a single method to trigger the invalidation: void processEntries()
+The invalidation manager is the only element which it is necessary to interact with from other parts of the application. It can trigger the invalidation two ways:
+* Synchronously
+* Asynchronously
 
-![Processing invalidation entries](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_sequence.png)
+The manager has a single method to trigger an asynchronous invalidation: void processEntries()
 
-The processors/collectors having the same colour go together.
+![Processing invalidation entries asynchronously](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_asynchronous_sequence.png)
+
+The manager can also perform a synchronous invalidation via two methods:
+* void processEntries(Collection<InvalidationEntry> entries)
+* void processEntry(InvalidationEntry entry)
+
+![Processing invalidation entries synchronously](https://github.com/ppodgorsek/juncacher/blob/master/src/doc/uml/generated/process_invalidation_entries_synchronous_sequence.png)
+
+On the above diagrams, the processors/collectors having the same colour go together.
 
 The invalidation of an entry is a bit more complex than just a single method call. For example, according to the type of entry:
 * Spring CacheManager: the cache regions will probably be different,
