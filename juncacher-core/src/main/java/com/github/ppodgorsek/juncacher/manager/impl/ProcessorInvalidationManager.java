@@ -105,7 +105,7 @@ public class ProcessorInvalidationManager implements InvalidationManager {
 
 		LOGGER.debug("Immediate processing of invalidation entries: {}", entries);
 
-		Collection<InvalidationEntry> entriesForNextProcessor = new ArrayList<>();
+		Collection<InvalidationEntry> entriesForNextProcessor = entries;
 
 		for (final Entry<InvalidationProcessor, InvalidationCollector> processorWithCollector : processorsWithCollectors
 				.entrySet()) {
