@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.Assert;
 
 import com.github.ppodgorsek.juncacher.exception.InvalidationException;
 import com.github.ppodgorsek.juncacher.interceptor.InvalidationInterceptor;
@@ -71,6 +72,8 @@ public class CacheLayerInvalidationProcessor implements InvalidationProcessor {
 	 * @return The invalidated entry, or {@code null} if it wasn't invalidated.
 	 */
 	protected InvalidationEntry invalidateEntry(final InvalidationEntry entry) {
+
+		Assert.notNull(entry, "The entry is required");
 
 		LOGGER.debug("Invalidating an entry: {}", entry);
 
