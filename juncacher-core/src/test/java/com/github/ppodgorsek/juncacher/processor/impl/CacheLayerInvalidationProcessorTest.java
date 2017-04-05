@@ -251,4 +251,34 @@ public class CacheLayerInvalidationProcessorTest {
 		assertEquals("Wrong invalidated entry", entry2, invalidatedEntry);
 	}
 
+	@Test
+	public void interceptorsGetterSetter() {
+
+		EasyMock.replay(interceptor1, interceptor2);
+		EasyMock.replay(strategy1, strategy2);
+
+		cacheLayerInvalidationProcessor.setInterceptors(interceptors);
+
+		final List<InvalidationInterceptor> interceptorsFetched = cacheLayerInvalidationProcessor
+				.getInterceptors();
+
+		assertNotNull("The interceptors shouldn't be null", interceptorsFetched);
+		assertEquals("Wrong list of interceptors", interceptors, interceptorsFetched);
+	}
+
+	@Test
+	public void strategiesGetterSetter() {
+
+		EasyMock.replay(interceptor1, interceptor2);
+		EasyMock.replay(strategy1, strategy2);
+
+		cacheLayerInvalidationProcessor.setStrategies(strategies);
+
+		final Map<String, InvalidationStrategy<InvalidationEntry>> strategiesFetched = cacheLayerInvalidationProcessor
+				.getStrategies();
+
+		assertNotNull("The strategies shouldn't be null", strategiesFetched);
+		assertEquals("Wrong map of strategies", strategies, strategiesFetched);
+	}
+
 }
