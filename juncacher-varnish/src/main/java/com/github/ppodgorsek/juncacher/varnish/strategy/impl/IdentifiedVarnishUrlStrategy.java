@@ -1,5 +1,7 @@
 package com.github.ppodgorsek.juncacher.varnish.strategy.impl;
 
+import org.springframework.util.Assert;
+
 import com.github.ppodgorsek.juncacher.model.InvalidationEntry;
 import com.github.ppodgorsek.juncacher.model.impl.IdentifiedInvalidationEntry;
 import com.github.ppodgorsek.juncacher.strategy.InvalidationStrategy;
@@ -37,6 +39,9 @@ public class IdentifiedVarnishUrlStrategy
 	}
 
 	public void setPlaceholder(final String newPlaceholder) {
+
+		Assert.notNull(newPlaceholder, "The placeholder is required");
+
 		placeholder = newPlaceholder;
 	}
 

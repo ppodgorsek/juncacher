@@ -251,4 +251,28 @@ public class CacheLayerInvalidationProcessorTest {
 		assertEquals("Wrong invalidated entry", entry2, invalidatedEntry);
 	}
 
+	@Test
+	public void interceptorsGetterSetter() {
+
+		cacheLayerInvalidationProcessor.setInterceptors(interceptors);
+
+		final List<InvalidationInterceptor> interceptorsFetched = cacheLayerInvalidationProcessor
+				.getInterceptors();
+
+		assertNotNull("The interceptors shouldn't be null", interceptorsFetched);
+		assertEquals("Wrong list of interceptors", interceptors, interceptorsFetched);
+	}
+
+	@Test
+	public void strategiesGetterSetter() {
+
+		cacheLayerInvalidationProcessor.setStrategies(strategies);
+
+		final Map<String, InvalidationStrategy<InvalidationEntry>> strategiesFetched = cacheLayerInvalidationProcessor
+				.getStrategies();
+
+		assertNotNull("The strategies shouldn't be null", strategiesFetched);
+		assertEquals("Wrong map of strategies", interceptors, strategiesFetched);
+	}
+
 }
