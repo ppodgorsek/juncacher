@@ -115,3 +115,8 @@ If you are using Maven, simply declare the following dependencies:
 `    </dependency>`
 
 `juncacher-core` is the only mandatory one, the others are optional and depend on what layers of cache your project has.
+
+## Please contribute!
+
+Have you found an issue? Do you have an idea for an improvement? Feel free to contribute by submitting it [on the GitHub project](https://github.com/ppodgorsek/juncacher/issues).
+
