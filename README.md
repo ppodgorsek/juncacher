@@ -10,7 +10,7 @@ Caches can have many forms:
 * JMS queues (to evict entries from distant systems)
 * others can be easily implemented.
 
-[![Codeship Status](https://codeship.com/projects/7fc26c70-a2cf-0133-3d2b-5219d091b483/status?branch=master)](https://codeship.com/projects/129036)
+[![Build Status](https://travis-ci.org/ppodgorsek/juncacher.svg?branch=master)](https://travis-ci.org/ppodgorsek/juncacher)
 [![Coverage Status](https://coveralls.io/repos/github/ppodgorsek/juncacher/badge.svg?branch=master)](https://coveralls.io/github/ppodgorsek/juncacher?branch=master)
 
 Any questions/comments/new ideas? Feel free to contribute!
