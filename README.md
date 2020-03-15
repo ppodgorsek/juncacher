@@ -12,7 +12,6 @@ Caches can have many forms:
 
 [![Codeship Status](https://codeship.com/projects/7fc26c70-a2cf-0133-3d2b-5219d091b483/status?branch=master)](https://codeship.com/projects/129036)
 [![Coverage Status](https://coveralls.io/repos/github/ppodgorsek/juncacher/badge.svg?branch=master)](https://coveralls.io/github/ppodgorsek/juncacher?branch=master)
-[![Dependency Badge](https://www.versioneye.com/user/projects/56a63e5d1b78fd0039000179/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56a63e5d1b78fd0039000179)
 
 Any questions/comments/new ideas? Feel free to contribute!
 
