@@ -63,7 +63,7 @@
 		<org.springframework.version>5.0.2.RELEASE</org.springframework.version>
 
 		<easymock.version>3.5.1</easymock.version>
-		<httpclient.version>4.5.4</httpclient.version>
+		<httpclient.version>4.5.13</httpclient.version>
 		<slf4j.version>1.7.25</slf4j.version>
 
 		<!-- PLUGINS -->
